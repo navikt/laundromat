@@ -13,7 +13,7 @@ class RegexFnr(RegexBase):
 
     @property
     def label(self):
-        return "[FNR]"
+        return "FNR"
 
     @property
     def score(self):

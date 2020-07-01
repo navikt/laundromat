@@ -34,6 +34,7 @@ class RegexBase(ABC):
         return NotImplementedError()
 
     def find_all(self, text: str):
+
         for hit in re.finditer(self.regex_pattern, text):
             print(hit.span())
 
@@ -42,4 +43,4 @@ class RegexBase(ABC):
         return NotImplementedError()
 
     def sub_all(self, text: str):
-        return re.sub(self.regex_pattern, self.label, text)
+        return re.sub(self.regex_pattern, f'[{self.label}]', text)
