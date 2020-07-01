@@ -8,7 +8,6 @@ class RegexBase(ABC):
     @abstractmethod
     def regex_pattern(self):
         """
-
         :return: Returns the regex pattern of the class
         """
         return NotImplementedError()
@@ -16,6 +15,9 @@ class RegexBase(ABC):
     @property
     @abstractmethod
     def label(self):
+        """
+        :return: Return label to substitute with
+        """
         return NotImplementedError()
 
     @property
