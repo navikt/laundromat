@@ -1,4 +1,4 @@
-from regex_engine.regex_base import RegexBase
+from nav_pii_anon.regex_engine.regex_base import RegexBase
 
 
 class RegexFnr(RegexBase):
@@ -13,7 +13,7 @@ class RegexFnr(RegexBase):
 
     @property
     def label(self):
-        return "[FNR]"
+        return "FNR"
 
     @property
     def score(self):
