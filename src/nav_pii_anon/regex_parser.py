@@ -20,7 +20,7 @@ def find_all_hits(text: str, labels: list = None) -> list:
     if labels:
         selected_labels.extend(labels)
     else:
-        selected_labels.extend([engine.name for engine in RegexEngines])
+        selected_labels.extend(all_possible_labels())
 
     engines = [engine.value for engine in RegexEngines if engine.value.label in selected_labels]
 
