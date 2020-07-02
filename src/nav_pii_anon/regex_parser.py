@@ -1,13 +1,5 @@
 from enum import Enum
-
-from nav_pii_anon.regex_engine.fnr import RegexFnr
-from nav_pii_anon.regex_engine.credit_card import RegexCreditCard
-
-
-class RegexEngines(Enum):
-    FNR = RegexFnr()
-    CREDIT_CARD = RegexCreditCard()
-
+from nav_pii_anon.regex_container import RegexEngines
 
 def all_possible_labels():
     return [engine.value.label for engine in RegexEngines]
