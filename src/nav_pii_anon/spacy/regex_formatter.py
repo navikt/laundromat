@@ -2,7 +2,11 @@ from enum import Enum
 from nav_pii_anon.regex_container import RegexEngines
 
 
-def regex_formatter(entities=None):
+def regex_formatter(entities:list =None):
+      """
+      Formats desired entities such that they can be fed to SpaCy's entity ruler 
+      :param entities: a list of strings denoting which entities one wishes to include in the model
+      """
       labels = all_possible_labels()
       if not entities:  
             regex = [ent.value.regex_pattern for ent in RegexEngines]
@@ -23,4 +27,7 @@ def new_entity(label:str, match:str):
       pass
 
 def all_possible_labels():
-    return [engine.value.label for engine in RegexEngines]
+      """
+      Prints all possible entities
+      """
+      return [engine.value.label for engine in RegexEngines]
