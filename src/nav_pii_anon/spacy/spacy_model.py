@@ -24,8 +24,8 @@ class SpacyModel():
             Adds desired patterns to the entity ruler of the SpaCy model
             :param entities: a list of strings denoting which entities the nlp model should detect.
             """
-            self.ruler.add_patterns(regex_formatter(entities), before = "ner")
-            self.model.add_pipe(ruler)
+            self.ruler.add_patterns(regex_formatter(entities))
+            self.model.add_pipe(ruler, before = "ner")
 
       def predict(self, text:str):
             """

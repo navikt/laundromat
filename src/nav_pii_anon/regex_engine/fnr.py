@@ -55,8 +55,9 @@ class RegexFnr(RegexBase):
 
         return matrix[size_x - 1, size_y - 1]
 
-        def validate(self):
-            pass
+    @property
+    def validate(self):
+        pass
 
     ## TODO: implement with our format
 
