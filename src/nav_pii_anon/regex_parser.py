@@ -28,3 +28,13 @@ def find_all_hits(text: str, labels: list = None) -> list:
         hits.extend(engine.find_all(text))
 
     return hits
+
+
+def replace_hits(text: str, labels: list = None) -> str:
+    hits = find_all_hits(text, labels)
+
+    for hit in hits:
+        text = text.replace(hit.get('hit'), f"[{hit.get('label')}]", 1)
+
+    return text
+
