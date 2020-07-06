@@ -1,5 +1,5 @@
 
-
+from nav_pii_anon.regex_container import RegexEngines
 from nav_pii_anon.regex_engine.fnr import RegexFnr
 from nav_pii_anon.regex_engine.credit_card import RegexCreditCard
 from nav_pii_anon.spacy.regex_formatter import regex_formatter
@@ -33,5 +33,8 @@ class SpacyModel():
             :param text: a string of text which is to be analysed.
             """
             doc = self.model(text)
-            print([(ent.text, ent.label_, ent.start, ent.end) for ent in doc.ents])
+            ents = [(ent.text, ent.label_, ent.start, ent.end) for ent in doc.ents]
+            for ent in ents:
+                  if ent[1]=="FNR":
+                        RegexFnr.levenstein_distance(ent)
 
