@@ -25,7 +25,7 @@ class SpacyModel():
             :param entities: a list of strings denoting which entities the nlp model should detect.
             """
             self.ruler.add_patterns(regex_formatter(entities))
-            self.model.add_pipe(ruler, before = "ner")
+            self.model.add_pipe(self.ruler, before = "ner")
 
       def predict(self, text:str):
             """
