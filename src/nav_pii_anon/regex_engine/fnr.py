@@ -65,7 +65,6 @@ class RegexFnr(RegexBase):
 
     def validate_pnr(self, pnr: str):
         """
-
         :param pnr:
         :return:
         """
@@ -99,7 +98,8 @@ class RegexFnr(RegexBase):
 
             if k1 == new_k1 and k2 == new_k2:
                 print('Valid PNR')
-                return 1
 
+                return 1.0
+              
         else:
             levenstein_distance(pnr)
