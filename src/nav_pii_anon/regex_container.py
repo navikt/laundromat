@@ -8,5 +8,5 @@ from enum import Enum
 class RegexEngines(Enum):
     FNR = RegexFnr()
     CREDIT_CARD = RegexCreditCard()
-    TLF = RegexTlfNr()
+    #TLF = RegexTlfNr()
     DTM = RegexDateTime()
