@@ -9,7 +9,7 @@ class RegexDateTime(RegexBase):
         TODO Currently overlaps with phone numbers. Maybe validation is the best way to get around this.
         TODO Add day and month names for a lookup
         """
-        return r"(\b\d{1,2}\\?\d{1,2}\\?\d{1,4}\b)|(\b\d{1,2}\/?\d{1,2}\/?\d{1,4}\b)|(\b\d{1,2}\.?\d{1,2}\.?\d{1,4}\b)|(\b\d{1,2}\/?\d{1,2}\-?\d{1,4}\b)|(\b\d{1,2}\-?\d{1,2}\-?\d{1,4}\b)|(\b\d{1,2}\:?\d{1,2}\b)|(\b\d{1,2}\.?\d{1,2}\b)"
+        return r"(\b\d{1,2}(\-|\\|\/|\.|\s)?\d{1,2}(\-|\\|\/|\.|\s)?\d{1,4}\b)(\b\d{1,2}(\.|\:)?\d{1,2}\b)"
 
     @property
     def context(self):
