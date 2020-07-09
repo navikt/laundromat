@@ -32,13 +32,15 @@ class SpacyModel():
             Prints the found entities, their labels, start, and end index.
             :param text: a string of text which is to be analysed.
             """
+            fnr = RegexEngines.FNR.value
             doc = self.model(text)
-            ents = [(ent.text, ent.label_, ent.start, ent.end, "NA") for ent in doc.ents]
+            ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
+            print(ents)
             for ent in ents:
                   if ent[1]=="FNR":
                         #TODO Since Levenstein distance returns a matrix we cannot have a simple call to the validate pnr function
-                        if(RegexFnr.validate_pnr(ent[1])==1.0):
-                              ent[-1] = 1.0
-                              print(ent)
+                        if(fnr.validate_pnr(ent[0])==1.0):
+                              ent[-1] = 1.0              
+            print(ents)
                         
 

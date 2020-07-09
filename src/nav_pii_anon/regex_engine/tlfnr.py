@@ -1,10 +1,13 @@
 from nav_pii_anon.regex_engine.regex_base import RegexBase
-
+import re
 
 class RegexTlfNr(RegexBase):
     @property
     def regex_pattern(self):
-        return r"(\b\d{8}\b)|\b\d{3}\s\d{2}\s\d{3}\b|(\b\d{2}\s\d{2}\s\d{2}\s\d{2}\b)"
+        """
+        Searches for 8-digit phone numbers and country codes.
+        """
+        return r"(\b00\d{1,2}\b)|\b\+\d{1,3}\b)|\b\d{8}\b)|\b\d{3}\s\d{2}\s\d{3}\b|(\b\d{2}\s\d{2}\s\d{2}\s\d{2}\b)"
 
     @property
     def context(self):
