@@ -7,8 +7,8 @@ from enum import Enum
 
 
 class RegexEngines(Enum):
-    AMOUNT = RegexAmount()  # Kan funke hvis den alltid er først??
     FNR = RegexFnr()
     CREDIT_CARD = RegexCreditCard()
     TLF = RegexTlfNr()
     DTM = RegexDateTime()
+    #AMOUNT = RegexAmount()

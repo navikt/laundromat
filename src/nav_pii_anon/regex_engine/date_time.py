@@ -30,7 +30,8 @@ class RegexDateTime(RegexBase):
     def validate(self):
         pass
 
-    def validate_dmt(self, dmt: str):
+    @staticmethod
+    def validate_dmt(dmt: str):
         """
         Checks a list of different datetime formats an does a checksum
         :param dmt:

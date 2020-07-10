@@ -26,7 +26,8 @@ class RegexTlfNr(RegexBase):
     def validate(self):
         pass
 
-    def validate_tlf(self, tlf: str):
+    @staticmethod
+    def validate_tlf(tlf: str):
 
         tlf = tlf.replace(' ', '')
         tlf = re.sub(r"(\+|00)47", '', tlf)

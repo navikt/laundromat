@@ -1,14 +1,15 @@
 from nav_pii_anon.regex_engine.regex_base import RegexBase
 import re
 
+
 class RegexAmount(RegexBase):
     """
-    Amount is mainly percent
+    Amount is percent
     """
     @property
     def regex_pattern(self):
+        return r"\d{2}\s(\w{7})"
 
-        return r"\d{1,3}\s?(\%|prosent)"
 
     @property
     def context(self):
