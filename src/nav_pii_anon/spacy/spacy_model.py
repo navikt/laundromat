@@ -1,4 +1,3 @@
-
 from nav_pii_anon.regex_container import RegexEngines
 from nav_pii_anon.regex_engine.fnr import RegexFnr
 from nav_pii_anon.regex_engine.credit_card import RegexCreditCard
@@ -6,7 +5,9 @@ from nav_pii_anon.spacy.regex_formatter import regex_formatter
 import spacy
 from spacy.pipeline import EntityRuler
 
-class SpacyModel():
+
+
+class SpacyModel:
 
 	def __init__(self, model = None):
 		"""
@@ -45,4 +46,3 @@ class SpacyModel():
 	def get_doc(self, text:str):
 		return self.model(text)
 				
-
