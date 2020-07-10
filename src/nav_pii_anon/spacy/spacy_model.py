@@ -6,7 +6,6 @@ import spacy
 from spacy.pipeline import EntityRuler
 
 
-
 class SpacyModel:
 
 	def __init__(self, model = None):
@@ -45,4 +44,3 @@ class SpacyModel:
 	
 	def get_doc(self, text:str):
 		return self.model(text)
-				
