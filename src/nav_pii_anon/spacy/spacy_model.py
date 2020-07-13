@@ -21,6 +21,7 @@ class SpacyModel:
 		else:
 			self.model = model
 		self.ruler = EntityRuler(self.model)
+		self.matcher = Matcher(self.model.vocab)
 	
 	def add_patterns(self, entities:list = None):
 		"""
@@ -28,6 +29,8 @@ class SpacyModel:
 		:param entities: a list of strings denoting which entities the nlp model should detect.
 		"""
 		#=========================================
+
+
 		self.model.add_pipe(match_func, before='ner')
 		#=========================================
 
@@ -54,14 +57,20 @@ class SpacyModel:
 	def get_doc(self, text:str):
 		return self.model(text)
 # =======================================
+
+
 def match_func(doc):
 	expression_list = regex_formatter()
+	ents_list = []
 	for expression in expression_list:
 		print(expression['label'])
 		for match in re.finditer(expression['pattern'][0]['TEXT']['REGEX'], doc.text):
 			start, end = match.span()
 			span = doc.char_span(start, end, label=expression['label'])
-			doc.ents = list(doc.ents) + [span]
+			ents_list.append([span, span.label_, (start, end)])
+			#doc.ents = list(doc.ents) + [span]
+	print(ents_list)
 
 	return doc
 # =======================================
+

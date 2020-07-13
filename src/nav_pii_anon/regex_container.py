@@ -7,6 +7,9 @@ from enum import Enum
 
 
 class RegexEngines(Enum):
+    """
+    Class that calls the different regex classes, and what priority they have. Priority form top to bottom
+    """
     FNR = RegexFnr()
     CREDIT_CARD = RegexCreditCard()
     TLF = RegexTlfNr()
