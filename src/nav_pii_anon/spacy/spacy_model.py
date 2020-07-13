@@ -18,8 +18,9 @@ class SpacyModel:
 			self.model = spacy.load("nb_core_news_lg")
 		else:
 			self.model=model
+		
 		self.ruler = EntityRuler(self.model)
-	
+		
 	def add_patterns(self, entities:list = None):
 		"""
 		Adds desired patterns to the entity ruler of the SpaCy model
@@ -45,4 +46,11 @@ class SpacyModel:
 	
 	def get_doc(self, text:str):
 		return self.model(text)
-				
+	
+	def disable_NER(self):
+		self.disabled = self.model.disable_pipes("ner")
+		pass
+
+	def enable_NER(self):
+		self.disabled.restore()
+		pass
