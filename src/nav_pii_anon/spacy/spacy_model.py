@@ -63,5 +63,5 @@ class SpacyModel:
 		censored_text = text
 		ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
 		for ent in ents:
-			censored_text.replace(ent[0], "<"+ent[1]+">")
+			censored_text = censored_text.replace(ent[0], "<"+ent[1]+">")
 		return censored_text
