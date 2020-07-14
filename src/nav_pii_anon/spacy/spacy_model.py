@@ -4,6 +4,7 @@ from nav_pii_anon.regex_engine.credit_card import RegexCreditCard
 from nav_pii_anon.spacy.regex_formatter import regex_formatter
 import spacy
 from spacy.pipeline import EntityRuler
+from spacy import displacy
 
 
 
@@ -47,10 +48,20 @@ class SpacyModel:
 	def get_doc(self, text:str):
 		return self.model(text)
 	
+	def display_predictions(self, text:str):
+		displacy.render(self.get_doc(text), style='ent', jupyter=True)
+
 	def disable_NER(self):
 		self.disabled = self.model.disable_pipes("ner")
-		pass
 
 	def enable_NER(self):
 		self.disabled.restore()
-		pass
+	
+	def replace(self, text:str):
+		fnr = RegexEngines.FNR.value
+		doc = self.model(text)
+		censored_text = text
+		ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
+		for ent in ents:
+			censored_text = censored_text.replace(ent[0], "<"+ent[1]+">")
+		return censored_text
