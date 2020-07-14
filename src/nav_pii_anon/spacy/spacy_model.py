@@ -60,7 +60,8 @@ class SpacyModel:
 	def replace(self, text:str):
 		fnr = RegexEngines.FNR.value
 		doc = self.model(text)
+		censored_text = text
 		ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
 		for ent in ents:
-			text.replace(ent[0], "<"+ent[1]+">")
-		return text
+			censored_text.replace(ent[0], "<"+ent[1]+">")
+		return censored_text
