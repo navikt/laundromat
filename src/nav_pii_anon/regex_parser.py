@@ -1,6 +1,7 @@
 from enum import Enum
 from nav_pii_anon.regex_container import RegexEngines
 
+
 def all_possible_labels():
     return [engine.value.label for engine in RegexEngines]
 
