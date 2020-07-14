@@ -1,4 +1,4 @@
-from nav_pii_anon.regex_container import RegexEngines
+
 from nav_pii_anon.spacy.matcher_regex import match_func
 import spacy
 from spacy.pipeline import EntityRuler
@@ -16,7 +16,6 @@ class SpacyModel:
 			self.model = spacy.load("nb_core_news_lg")
 		else:
 			self.model = model
-		self.ruler = EntityRuler(self.model)
 		self.matcher = Matcher(self.model.vocab)
 	
 	def add_patterns(self, entities:list = None):
@@ -31,16 +30,8 @@ class SpacyModel:
 		Prints the found entities, their labels, start, and end index.
 		:param text: a string of text which is to be analysed.
 		"""
-		fnr = RegexEngines.FNR.value
 		doc = self.model(text)
-
 		ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
-		for ent in ents:
-			if ent[1] == "FNR":
-				# TODO Since Levenstein distance returns a matrix we cannot have
-				#  a simple call to the validate pnr function
-				if fnr.validate_pnr(ent[0]) == 1.0:
-					ent[-1] = 1.0
 
 		print(ents)
 	

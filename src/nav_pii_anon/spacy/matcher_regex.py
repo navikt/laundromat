@@ -10,7 +10,6 @@ def match_func(doc):
         for match in re.finditer(expression['pattern'][0]['TEXT']['REGEX'], doc.text):
             start, end = match.span()
             span = doc.char_span(start, end, label=expression['label'])
-            ents_list.append([span, span.label_, (start, end)])
             try:
                 doc.ents = list(doc.ents) + [span]
             except ValueError:
