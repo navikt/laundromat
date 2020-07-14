@@ -14,4 +14,4 @@ class RegexEngines(Enum):
     CREDIT_CARD = RegexCreditCard()
     TLF = RegexTlfNr()
     DTM = RegexDateTime()
-    #AMOUNT = RegexAmount()
+    AMOUNT = RegexAmount()

@@ -8,7 +8,7 @@ class RegexAmount(RegexBase):
     """
     @property
     def regex_pattern(self):
-        return r"\d{2}\s(\w{7})"
+        return r"\d{1,3}\s*(%|prosent)"
 
 
     @property
