@@ -49,7 +49,7 @@ class SpacyModel:
 		return self.model(text)
 	
 	def display_predictions(self, text:str):
-		displacy.render(get_doc(text), style='ent', jupyter=True)
+		displacy.render(self.get_doc(text), style='ent', jupyter=True)
 
 	def disable_NER(self):
 		self.disabled = self.model.disable_pipes("ner")
