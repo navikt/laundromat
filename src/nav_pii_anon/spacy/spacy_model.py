@@ -63,3 +63,4 @@ class SpacyModel:
 		ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
 		for ent in ents:
 			text.replace(ent[0], "<"+ent[1]+">")
+		return text
