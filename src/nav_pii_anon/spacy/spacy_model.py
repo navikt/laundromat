@@ -52,7 +52,6 @@ class SpacyModel:
 		self.disabled.restore()
 	
 	def replace(self, text:str):
-		fnr = RegexEngines.FNR.value
 		doc = self.model(text)
 		censored_text = text
 		ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
