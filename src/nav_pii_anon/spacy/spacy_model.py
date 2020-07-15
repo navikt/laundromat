@@ -1,7 +1,6 @@
 
 from nav_pii_anon.spacy.matcher_regex import match_func
 import spacy
-from spacy.pipeline import EntityRuler
 from spacy.matcher import Matcher
 from spacy import displacy
 
@@ -40,15 +39,13 @@ class SpacyModel:
 	def get_doc(self, text:str):
 		return self.model(text)
 
-
-	
 	def display_predictions(self, text:str):
 		displacy.render(self.get_doc(text), style='ent', jupyter=True)
 
-	def disable_NER(self):
+	def disable_ner(self):
 		self.disabled = self.model.disable_pipes("ner")
 
-	def enable_NER(self):
+	def enable_ner(self):
 		self.disabled.restore()
 	
 	def replace(self, text:str):

@@ -1,6 +1,6 @@
 from nav_pii_anon.regex_engine.regex_base import RegexBase
 import datetime
-import re
+
 
 
 class RegexDateTime(RegexBase):
