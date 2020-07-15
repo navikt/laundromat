@@ -48,6 +48,5 @@ def regex_engines():
         RegexTlfNr(),
         RegexDateTime(),
         RegexAmount()
-
     ]
     return regex_function
