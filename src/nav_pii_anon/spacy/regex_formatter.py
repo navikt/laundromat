@@ -4,6 +4,7 @@ from nav_pii_anon.regex_engine.tlfnr import RegexTlfNr
 from nav_pii_anon.regex_engine.amount import RegexAmount
 from nav_pii_anon.regex_engine.date_time import RegexDateTime
 
+# TODO Keeping for now, consider removing later
 
 def regex_formatter(entities: list = None):
     """
