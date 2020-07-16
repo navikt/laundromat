@@ -30,18 +30,16 @@ def overlap(span, doc):
     :return: Boolean: Overlap indicator
     """
     if span is not None:
-
-        for ent in doc.ents:
-            print(span, ent)
-            print(span.start, span.end, ent.start, ent.end + 1)
+        for ent in list(doc.ents):
+            print("This is span and ent:", span, ent)
+            print("This is span range and ent rangte", span.start, span.end, ent.start, ent.end + 1)
 
             if span.start in range(ent.start, ent.end + 1) or span.end in range(ent.start, ent.end + 1):
                 overlap_solver(span, doc, ent)
                 print('TRUE!')
                 return True
-            else:
-                print('FALSE!')
-                return False
+        print('FALSE!')
+        return False    
 
     else:
         print('span is None')
