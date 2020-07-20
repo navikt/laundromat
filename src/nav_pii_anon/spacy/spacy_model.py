@@ -59,6 +59,7 @@ class SpacyModel:
             censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
         return censored_text
 
+
 def train(self, TRAIN_DATA, labels: list = ['ORG', 'LOC', 'DTM', 'PER',
                                             'TLF', 'TITLE', 'MEDICAL_CONDITIONS'],
           n_iter: int = 30):
