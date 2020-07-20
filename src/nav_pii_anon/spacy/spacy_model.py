@@ -13,9 +13,9 @@ class SpacyModel:
 
     def __init__(self, model=None):
         """
-		SpacyModel class: A class for managing a SpaCy nlp model with methods for adding custom RegEx and for easy printing
-		:param model: an nlp model
-		"""
+        SpacyModel class: A class for managing a SpaCy nlp model with methods for adding custom RegEx and for easy printing
+        :param model: an nlp model
+        """
         if not model:
             self.model = spacy.load("nb_core_news_lg")
         else:
@@ -24,16 +24,16 @@ class SpacyModel:
 
     def add_patterns(self, entities: list = None):
         """
-		Adds desired patterns to the entity ruler of the SpaCy model
-		:param entities: a list of strings denoting which entities the nlp model should detect.
-		"""
+        Adds desired patterns to the entity ruler of the SpaCy model
+        :param entities: a list of strings denoting which entities the nlp model should detect.
+        """
         self.model.add_pipe(match_func, before='ner')
 
     def predict(self, text: str):
         """
-		Prints the found entities, their labels, start, and end index.
-		:param text: a string of text which is to be analysed.
-		"""
+        Prints the found entities, their labels, start, and end index.
+        :param text: a string of text which is to be analysed.
+        """
         doc = self.model(text)
         ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
 
@@ -59,13 +59,14 @@ class SpacyModel:
             censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
         return censored_text
 
-    def train(self, TRAIN_DATA, labels: list = ['ORG', 'LOC', 'DTM', 'PER',
-                                                'TLF', 'TITLE', 'MEDICAL_CONDITIONS'],
-              n_iter: int = 30):
+
+def train(self, TRAIN_DATA, labels: list = ['ORG', 'LOC', 'DTM', 'PER',
+                                            'TLF', 'TITLE', 'MEDICAL_CONDITIONS'],
+          n_iter: int = 30):
         ner = self.model.get_pipe("ner")
         for lab in labels:
             ner.add_label(lab)
-            optimizer = self.model.resume_training()
+        optimizer = self.model.resume_training()
         move_names = list(ner.move_names)
         pipe_exceptions = ["ner", "trf_wordpiecer", "trf_tok2vec"]
         other_pipes = [pipe for pipe in self.model.pipe_names if pipe not in pipe_exceptions]
