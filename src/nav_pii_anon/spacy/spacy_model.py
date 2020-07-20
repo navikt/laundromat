@@ -60,7 +60,7 @@ class SpacyModel:
         return censored_text
 
 
-def train(self, TRAIN_DATA, labels: list = ['ORG', 'LOC', 'DTM', 'PER',
+    def train(self, TRAIN_DATA, labels: list = ['ORG', 'LOC', 'DTM', 'PER',
                                             'TLF', 'TITLE', 'MEDICAL_CONDITIONS'],
           n_iter: int = 30):
         ner = self.model.get_pipe("ner")
