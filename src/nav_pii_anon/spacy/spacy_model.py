@@ -3,6 +3,10 @@ from nav_pii_anon.spacy.matcher_regex import match_func
 import spacy
 from spacy.matcher import Matcher
 from spacy import displacy
+from spacy.util import minibatch, compounding
+import plac
+import random
+import warnings
 
 
 
@@ -55,4 +59,7 @@ class SpacyModel:
 		for ent in ents:
 			censored_text = censored_text.replace(ent[0], "<"+ent[1]+">")
 		return censored_text
+
+	
+		
 
