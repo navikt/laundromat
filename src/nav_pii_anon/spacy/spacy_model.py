@@ -64,7 +64,6 @@ def train(self, TRAIN_DATA, labels: list = ['ORG', 'LOC', 'DTM', 'PER',
           n_iter: int = 30):
         ner = self.model.get_pipe("ner")
         for lab in labels:
-            print(type(lab))
             ner.add_label(lab)
         optimizer = self.model.resume_training()
         move_names = list(ner.move_names)
