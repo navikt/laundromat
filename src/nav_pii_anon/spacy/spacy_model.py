@@ -5,7 +5,6 @@ from spacy import displacy
 import plac
 import random
 import warnings
-from pathlib import Path
 import spacy
 from spacy.util import minibatch, compounding
 
@@ -72,7 +71,6 @@ class SpacyModel:
         other_pipes = [pipe for pipe in self.model.pipe_names if pipe not in pipe_exceptions]
         with (self.model.disable_pipes(*other_pipes)), warnings.catch_warnings():
             warnings.filterwarnings("once", category=UserWarning, module='spacy')
-
             sizes = compounding(1.0, 4.0, 1.001)
             # batch up the examples using spaCy's minibatch
             for itn in range(n_iter):
