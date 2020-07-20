@@ -59,12 +59,12 @@ class SpacyModel:
             censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
         return censored_text
 
-    def train(self, label: str, TRAIN_DATA: list = ['ORG', 'LOC', 'DATE_TIME', 'PER',
-                                                    'TLF', 'TITLE', 'MEDICAL_CONDITIONS'],
+    def train(self, TRAIN_DATA, labels:list = ['ORG', 'LOC', 'DTM', 'PER',
+                                                    'TLF', 'TITLE', 'MEDICAL_CONDITIONS'], 
               n_iter: int = 30):
-
         ner = self.model.get_pipe("ner")
-        ner.add_label(label)
+        for lab in labels:
+			ner.add_label(lab)
         optimizer = self.model.resume_training()
         move_names = list(ner.move_names)
         pipe_exceptions = ["ner", "trf_wordpiecer", "trf_tok2vec"]
