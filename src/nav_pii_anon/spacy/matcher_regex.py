@@ -31,35 +31,36 @@ def overlap(span, doc):
     """
     if span is not None:
         for ent in list(doc.ents):
-            print("This is span and ent:", span, ent)
-            print("This is span range and ent rangte", span.start, span.end, ent.start, ent.end + 1)
+            #print("This is span and ent:", span, ent)
+            #print("This is span range and ent rangte", span.start, span.end, ent.start, ent.end + 1)
 
             if span.start in range(ent.start, ent.end + 1) or span.end in range(ent.start, ent.end + 1):
                 overlap_solver(span, doc, ent)
-                print('TRUE!')
+                #print('TRUE!')
                 return True
-        print('FALSE!')
+        #print('FALSE!')
         return False    
 
     else:
-        print('span is None')
+        #print('span is None')
         return True
 
 
 def overlap_solver(span, doc, ent):
     if span.start == ent.start and span.end == ent.end:
-        print('span and ent same length')
+        #TODO solve this scenario
+        pass
     elif (span.start < ent.end < span.end) or (span.end > ent.start > span.start):
         start = min(span.start, ent.start)
         end = max(span.end, ent.end)
         doc.ents.remove(ent)
         new_span = doc.char_span(start, end, label="OVERLAP")
         doc.ents = list(doc.ents) + [new_span]
-        print('overlap fixed:', new_span)
+        #print('overlap fixed:', new_span)
     else:
         if len(span.text) > len(ent.text):
             doc.ents.remove(ent)
             doc.ents = list(doc.ents) + [span]
-            print('span is longer than ent')
+            #print('span is longer than ent')
         else:
-            print('ent longer than span')
+            pass
