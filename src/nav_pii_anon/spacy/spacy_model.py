@@ -6,11 +6,14 @@ import numpy as np
 import pandas as pd
 import plac
 import spacy
+
 from nav_pii_anon.spacy.matcher_regex import match_func
 from sklearn.metrics import f1_score
 from spacy import displacy
 from spacy.matcher import Matcher
 from spacy.util import compounding, minibatch
+from pathlib import Path
+from spacy.language import Language
 
 
 class SpacyModel:
@@ -31,7 +34,8 @@ class SpacyModel:
         Adds desired patterns to the entity ruler of the SpaCy model
         :param entities: a list of strings denoting which entities the nlp model should detect.
         """
-        self.model.add_pipe(match_func, before='ner')
+        self.model.add_pipe(match_func, name="regex_matcher", before='ner')
+
 
     def predict(self, text: str):
         """
@@ -62,10 +66,10 @@ class SpacyModel:
             censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
         return censored_text
 
+    def train(self, TRAIN_DATA, labels: list =['PER', 'ORG', 'TLF', 'LOC', 'DTM', 'FNR',
+                                                'AGE', 'AMOUNT', 'NAV_YTELSER', 'MEDICAL_CONDITIONS'],
+              n_iter: int = 30, output_dir=None):
 
-    def train(self, TRAIN_DATA, labels: list = ['ORG', 'LOC', 'DTM', 'PER',
-                                            'TLF', 'TITLE', 'MEDICAL_CONDITIONS'],
-          n_iter: int = 30):
         ner = self.model.get_pipe("ner")
         for lab in labels:
             ner.add_label(lab)
@@ -85,6 +89,22 @@ class SpacyModel:
                     texts, annotations = zip(*batch)
                     self.model.update(texts, annotations, sgd=optimizer, drop=0.35, losses=losses)
                 print("Losses", losses)
+        # Save model
+        if output_dir is not None:
+            output_dir = Path(output_dir)
+            if not output_dir.exists():
+                output_dir.mkdir()
+            self.model.meta["name"] = 'test_model'  # rename model
+            self.model.to_disk(output_dir)
+            print("Saved model to", output_dir)
+
+            # test the saved model
+            print("Loading from", output_dir)
+            nlp2 = spacy.load(output_dir)
+            # Check the classes have loaded back consistently
+            assert nlp2.get_pipe("ner").move_names == move_names
+
+
 
 def test(self, TEST_DATA):
     """
