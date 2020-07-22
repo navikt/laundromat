@@ -63,6 +63,12 @@ class SpacyModel:
         self.disabled.restore()
 
     def replace(self, text: str):
+        """
+        Replaces found entities in the given text with the attendant entity labels,
+        e.g. a name is replaced with <PER>.
+
+        returns: the modified text as a string
+        """
         doc = self.model(text)
         censored_text = text
         ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
@@ -115,6 +121,8 @@ class SpacyModel:
         df.columns = ["Text", "True_entities"]
         for txt, ents in zip(df["Text"], df["True_entities"]):
             doc = self.model.make_doc(txt)
+
+            #Gold refers to the correct entity labels
             gold = GoldParse(doc, entities=ents["entities"])
             pred = self.get_doc(txt)
             scorer.score(pred, gold)
@@ -131,6 +139,8 @@ class SpacyModel:
         in the entity.
         TODO Case in which one is contained in the other has been simplified
         TODO No functionality for which entity label has been applied
+
+        returns: a custom score, and the F_1 score
         """
         y_true = []
         y_pred = []
@@ -144,6 +154,7 @@ class SpacyModel:
         #Iterate through the prediction and the truth and compare
         #Generate binary list with values based on the truth and predictions
         for model_ent, truth in zip_longest(df["Model_entities"], df["True_entities"]):
+            #If and elif cover if one column is shorter than the other
             if not truth:
                 y_true += [0]
                 y_pred += [1]
@@ -152,7 +163,6 @@ class SpacyModel:
                 y_pred += [0]
             else:
                 #Compares the model prediction with ground truth
-                print("model_ent", model_ent)
                 if len(model_ent['entities'])==0:
                     y_pred += [0] *len(truth['entities'])
                     y_true += [1] *len(truth['entities'])
