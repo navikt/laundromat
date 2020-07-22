@@ -1,11 +1,23 @@
+
 from nav_pii_anon.spacy.matcher_regex import match_func
 from nav_pii_anon.spacy.matcher_list import name_list_matcher
 from spacy.matcher import Matcher
 from spacy import displacy
+
 import random
 import warnings
+from itertools import zip_longest
+
+import numpy as np
+import pandas as pd
+import plac
 import spacy
-from spacy.util import minibatch, compounding
+
+from nav_pii_anon.spacy.matcher_regex import match_func
+from sklearn.metrics import f1_score
+from spacy import displacy
+from spacy.matcher import Matcher
+from spacy.util import compounding, minibatch
 from pathlib import Path
 
 
@@ -39,7 +51,6 @@ class SpacyModel:
         """
         doc = self.model(text)
         ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
-
         print(ents)
 
     def get_doc(self, text: str):
@@ -85,7 +96,6 @@ class SpacyModel:
                     texts, annotations = zip(*batch)
                     self.model.update(texts, annotations, sgd=optimizer, drop=0.35, losses=losses)
                 print("Losses", losses)
-
         # Save model
         if output_dir is not None:
             output_dir = Path(output_dir)
@@ -100,3 +110,61 @@ class SpacyModel:
             nlp2 = spacy.load(output_dir)
             # Check the classes have loaded back consistently
             assert nlp2.get_pipe("ner").move_names == move_names
+
+
+
+def test(self, TEST_DATA):
+    """
+    Tests the model on the given test data. Since identifying sensitive information is more important
+    than identifying it correctly, we utilise both our own custom score and a much
+    stricter F1 score. For our custom score metric, each correct entity represents 1 point.
+    Each token correctly labeled represents 1/n points where n is the number of tokens
+    in the entity.
+    TODO Case in which one is contained in the other has been simplified
+    TODO No functionality for which entity label has been applied
+    """
+    y_true = []
+    y_pred = []
+    score = 0
+    number_of_ents = 0
+    df = pd.DataFrame(TEST_DATA)
+    df.columns = ["Text", "True_entites"]
+    df["Model_entities"] = df["Text"].apply(lambda x: self.model(x).ents)
+    #Iterate through the prediction and the truth and compare
+    #Generate binary list with values based on the truth and predictions
+    for model_ent, truth in zip_longest(df["Model_entities"], df["True_entites"]):
+        if not truth:
+            y_true += [0]
+            y_pred += [1]
+        elif not model_ent:
+            y_true += [1]
+            y_pred += [0]
+        else:
+            #Compares the model prediction with ground truth
+            model_start, model_end, model_label = model_ent['entities'][0][0], model_ent['entities'][0][1], model_ent['entities'][0][2]
+            truth_start, truth_end, truth_label = truth['entities'][0][0], truth['entities'][0][1], truth['entities'][0][2]
+            if model_start == truth_start and model_end == truth_end:
+                #Checks if the entities are the same
+                y_true += [1]
+                y_pred += [1]
+                score += 1
+                number_of_ents += 1
+            elif (model_start < truth_end < model_end) or (model_end > truth_start > model_start):
+                #Checks if there is exclusive overlap between the labels
+                y_true += [1]
+                y_pred += [0]
+                score += (model_end-model_start)/(truth_end-truth_start)
+                number_of_ents += 1
+            else:
+                #This covers cases where a label is wholly contained in another
+                if (model_end-model_start)< (truth_end-truth_start):
+                    score += 1
+                    y_true += [1]
+                    y_pred += [0]
+                else:
+                    score += 0.5
+                    y_true += [1]
+                    y_pred += [1]
+                number_of_ents += 1
+
+    return score/number_of_ents, f1_score(y_true, y_pred)
