@@ -1,6 +1,6 @@
 
 from nav_pii_anon.spacy.matcher_regex import match_func
-from nav_pii_anon.spacy.matcher_list import name_list_matcher
+from nav_pii_anon.spacy.matcher_list import csv_list_matcher
 from spacy.matcher import Matcher
 from spacy import displacy
 
@@ -39,8 +39,7 @@ class SpacyModel:
         Adds desired patterns to the entity ruler of the SpaCy model
         :param entities: a list of strings denoting which entities the nlp model should detect.
         """
-        ruler = name_list_matcher(self.model
-                                  )
+        ruler = csv_list_matcher(self.model)
         self.model.add_pipe(match_func, name="regex_matcher", before='ner')
         self.model.add_pipe(ruler, after="ner")
 
@@ -118,8 +117,6 @@ class SpacyModel:
             nlp2 = spacy.load(output_dir)
             # Check the classes have loaded back consistently
             assert nlp2.get_pipe("ner").move_names == move_names
-
-
 
     def test(self, TEST_DATA):
         """
