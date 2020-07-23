@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import plac
 import spacy
-from nav_pii_anon.spacy.matcher_list import name_list_matcher
+from nav_pii_anon.spacy.matcher_list import csv_list_matcher
 from nav_pii_anon.spacy.matcher_regex import match_func
 from sklearn.metrics import f1_score
 from spacy import displacy
@@ -36,8 +36,7 @@ class SpacyModel:
         Adds desired patterns to the entity ruler of the SpaCy model
         :param entities: a list of strings denoting which entities the nlp model should detect.
         """
-        ruler = name_list_matcher(self.model
-                                  )
+        ruler = csv_list_matcher(self.model)
         self.model.add_pipe(match_func, name="regex_matcher", before='ner')
         self.model.add_pipe(ruler, after="ner")
 
@@ -79,6 +78,14 @@ class SpacyModel:
     def train(self, TRAIN_DATA, labels: list =['PER', 'ORG', 'TLF', 'LOC', 'DTM', 'FNR',
                                                 'AGE', 'AMOUNT', 'NAV_YTELSER', 'MEDICAL_CONDITIONS'],
               n_iter: int = 30, output_dir=None):
+
+        """
+        Takes the training data and trains the wanted entities. Also saves the model if a output path is given
+        :param TRAIN_DATA:
+        :param labels: texts with labels
+        :param n_iter: number
+        :param output_dir:
+        """
 
         ner = self.model.get_pipe("ner")
         for lab in labels:
@@ -128,8 +135,6 @@ class SpacyModel:
             scorer.score(pred, gold)
         return scorer.scores
 
-
-
     def test(self, TEST_DATA):
         """
         Tests the model on the given test data. Since identifying sensitive information is more important
@@ -139,7 +144,6 @@ class SpacyModel:
         in the entity.
         TODO Case in which one is contained in the other has been simplified
         TODO No functionality for which entity label has been applied
-
         returns: a custom score, and the F_1 score
         """
         y_true = []
@@ -196,5 +200,4 @@ class SpacyModel:
                             y_true += [1]
                             y_pred += [1]
                         number_of_ents += 1
-
         return score/number_of_ents, f1_score(y_true, y_pred)

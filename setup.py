@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import setuptools
+from setuptools import setup, find_packages
 
 
 with open('requirements.txt') as f:
@@ -9,15 +9,15 @@ with open('VERSION') as f:
     version = f.read()
 
 
-setuptools.setup(
+setup(
     name='nav-pii-anon',
     version=version,
-    packages=setuptools.find_packages('src'),
+    packages=find_packages('src'),
     package_dir={'': 'src'},
     python_requires='>=3.6',
     install_requires=install_requires,
     author="NAV IKT",
-    description="NAV sommerstudeneter anonymiserings pakke ",
+    description="NAV sommerstudenter anonymiserings pakke ",
     license="MIT",
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -25,4 +25,6 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7'
     ],
+    package_data={'nav_pii_anon': ['spacy/data/*.csv']}
+
 )
