@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 from spacy.pipeline import EntityRuler
 
 
@@ -10,15 +11,20 @@ def name_list_matcher(nlp):
     :return: ruler:
     """
 
-    file_list = ['guttefornavn_ssb.csv', 'jentefornavn_ssb.csv', 'etternavn_ssb.csv']
+    file_list = ['etternavn_ssb.csv',
+                 'guttefornavn_ssb.csv',
+                 'jentefornavn_ssb.csv']
     names_list = []
 
+    location = os.path.dirname(os.path.realpath(__file__))
     for file_path in file_list:
-        df = pd.read_csv(file_path, sep=';')
-        names_list.extend(df.iloc[:, 0].to_list())
+        my_file = os.path.join(location, 'data', file_path)
+        name_df = pd.read_csv(my_file, sep=';')
+        names_list.extend(name_df.iloc[:, 0].to_list())
 
-    patterns = [{"label": "PER", "pattern": name} for name in names_list]
     ruler = EntityRuler(nlp)
+    patterns = [{"label": "PER", "pattern": [{"lower": name.lower()}]} for name in names_list]
+    print(patterns)
     ruler.add_patterns(patterns)
 
     return ruler
