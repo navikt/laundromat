@@ -16,6 +16,7 @@ from spacy.gold import GoldParse
 from spacy.matcher import Matcher
 from spacy.scorer import Scorer
 from spacy.util import compounding, minibatch
+import networkx as nx
 
 
 class SpacyModel:
@@ -224,3 +225,12 @@ class SpacyModel:
                             y_pred += [1]
                         number_of_ents += 1
         return score/number_of_ents, f1_score(y_true, y_pred)
+    
+    def dependency_graph(self, text: str):
+        doc = self.model(text)
+        edges = []
+        for token in doc:
+            for child in token.children:
+                edges.append(('{0}'.format(token.lower_),
+                            '{0}'.format(child.lower_)))
+        return nx.Graph(edges)
