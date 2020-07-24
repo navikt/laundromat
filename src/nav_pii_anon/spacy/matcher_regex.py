@@ -17,7 +17,6 @@ def match_func(doc):
 
             if not overlap(span, doc):
                 doc.ents = list(doc.ents) + [span]
-                print(doc.ents)
 
     return doc
 
