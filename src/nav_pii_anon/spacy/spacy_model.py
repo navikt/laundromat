@@ -79,7 +79,7 @@ class SpacyModel:
                 if complete_rm:
                     censored_text = censored_text.replace(ent[0], "~")
                 else:
-                    censored_text = censored_text.replace(ent[0], ent[1])
+                    censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
             return censored_text
         else:
             girls_names = get_data('jentefornavn_ssb.csv')['fornavn']
@@ -97,7 +97,7 @@ class SpacyModel:
                 if ent[1] == 'LOC':
                     censored_text = censored_text.replace(ent[0], loc_list[np.random.randint(0, len(loc_list))])
                 else:
-                    censored_text = censored_text.replace(ent[0], ent[1])
+                    censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
 
             return censored_text
 
@@ -227,6 +227,7 @@ class SpacyModel:
         return score/number_of_ents, f1_score(y_true, y_pred)
     
     def dependency_graph(self, text: str):
+        #TODO Seems to struggle with the  <ENTITY> format as <, >, and . end up as their own nodes.
         doc = self.model(text)
         edges = []
         for token in doc:
@@ -241,3 +242,9 @@ class SpacyModel:
         if(n>len(sorted_node_degrees)):
             n = len(sorted_node_degrees)
         return sorted_node_degrees[:n]
+    
+    def similarity(self, text:str, complete_rm=False, shuffle=False):
+        original = self.model(text)
+        censored = self.model(self.replace(text, complete_rm, shuffle))
+        return original.similarity(censored)
+
