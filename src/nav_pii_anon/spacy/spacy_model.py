@@ -79,7 +79,7 @@ class SpacyModel:
                 if complete_rm:
                     censored_text = censored_text.replace(ent[0], "~")
                 else:
-                    censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
+                    censored_text = censored_text.replace(ent[0], ent[1])
             return censored_text
         else:
             girls_names = get_data('jentefornavn_ssb.csv')['fornavn']
@@ -97,7 +97,7 @@ class SpacyModel:
                 if ent[1] == 'LOC':
                     censored_text = censored_text.replace(ent[0], loc_list[np.random.randint(0, len(loc_list))])
                 else:
-                    censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
+                    censored_text = censored_text.replace(ent[0], ent[1])
 
             return censored_text
 
