@@ -3,13 +3,13 @@ import random
 import warnings
 from itertools import zip_longest
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import plac
 import spacy
 from nav_pii_anon.spacy.matcher_list import csv_list_matcher
 from nav_pii_anon.spacy.matcher_regex import match_func
+from nav_pii_anon.spacy.data_handler import get_data
 from sklearn.metrics import f1_score
 from spacy import displacy
 from spacy.gold import GoldParse
@@ -61,23 +61,46 @@ class SpacyModel:
     def enable_ner(self):
         self.disabled.restore()
 
-    def replace(self, text: str):
+    def replace(self, text: str, complete_rm=False, shuffle=False):
         """
         Replaces found entities in the given text with the attendant entity labels,
         e.g. a name is replaced with <PER>.
 
         returns: the modified text as a string
         """
-        doc = self.model(text)
-        censored_text = text
-        ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
-        for ent in ents:
-            censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
-        return censored_text
 
-    def train(self, TRAIN_DATA, labels: list =['PER', 'ORG', 'TLF', 'LOC', 'DTM', 'FNR',
-                                                'AGE', 'AMOUNT', 'NAV_YTELSER', 'MEDICAL_CONDITIONS'],
-              n_iter: int = 30, output_dir=None):
+        doc = self.model(text)
+        censored_text = text  # Redundant variable?
+        ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
+
+        if not shuffle:
+            for ent in ents:
+                if complete_rm:
+                    censored_text = censored_text.replace(ent[0], "~")
+                else:
+                    censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
+            return censored_text
+        else:
+            girls_names = get_data('jentefornavn_ssb.csv')['fornavn']
+            boys_names = get_data('guttefornavn_ssb.csv')['fornavn']
+            name_list = girls_names.append(boys_names, ignore_index=True)
+
+            kom_names = get_data('kommuner.csv')['name']
+            counrties_names = get_data('land.csv')['name']
+            villages_names = get_data('tettsteder.csv')['name']
+            loc_list = kom_names.append(counrties_names.append(villages_names, ignore_index=True), ignore_index=True)
+
+            for ent in ents:
+                if ent[1] == 'PER':
+                    censored_text = censored_text.replace(ent[0], name_list[np.random.randint(0, len(name_list))])
+                if ent[1] == 'LOC':
+                    censored_text = censored_text.replace(ent[0], loc_list[np.random.randint(0, len(loc_list))])
+                else:
+                    censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
+
+            return censored_text
+
+    def train(self, TRAIN_DATA, labels: list, n_iter: int = 30, output_dir=None):
 
         """
         Takes the training data and trains the wanted entities. Also saves the model if a output path is given
