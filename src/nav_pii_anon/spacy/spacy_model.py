@@ -234,3 +234,10 @@ class SpacyModel:
                 edges.append(('{0}'.format(token.lower_),
                             '{0}'.format(child.lower_)))
         return nx.Graph(edges)
+
+    def top_n_nodes(self, text:str, n=10):
+        graph = self.dependency_graph(text)
+        sorted_node_degrees = sorted(list(graph.degree), key= lambda x: x[1], reverse=True)
+        if(n>len(sorted_node_degrees)):
+            n = len(sorted_node_degrees)
+        return sorted_node_degrees[:n]
