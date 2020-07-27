@@ -7,7 +7,6 @@ class RegexTlfNr(RegexBase):
         """
         Searches for 8-digit phone numbers and country codes.
         """
-        # r"(\b00\d{1,2}\b)|\b\+\d{1,3}\b)|\b\d{8}\b)|\b\d{3}\s\d{2}\s\d{3}\b|(\b\d{2}\s\d{2}\s\d{2}\s\d{2}\b)"
         # Det regexuttrykket som retuneres er rimelig robust, men tar bare norske tlfnr
         return r"(?<!\d)((\+|00)47\s*)*(\d{8}|\d{3}\s\d{2}\s\d{3}|\d{2}\s\d{2}\s\d{2}\s\d{2})(?!\s*\d)"
 
