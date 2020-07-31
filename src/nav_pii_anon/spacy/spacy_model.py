@@ -55,7 +55,7 @@ class SpacyModel:
         return self.model(text)
 
     def display_predictions(self, text: str):
-        displacy.render(self.get_doc(text), style='ent', jupyter=True)
+        displacy.render(self.model(text), style='ent', jupyter=True)
 
     def disable_ner(self):
         self.disabled = self.model.disable_pipes("ner")
@@ -158,7 +158,7 @@ class SpacyModel:
 
             #Gold refers to the correct entity labels
             gold = GoldParse(doc, entities=ents["entities"])
-            pred = self.get_doc(txt)
+            pred = self.model(txt)
             scorer.score(pred, gold)
         return scorer.scores #, scorer.textcat_score, scorer.textcats_per_cat
 
@@ -176,7 +176,7 @@ class SpacyModel:
             for truth in df["True_entities"]:
                 if truth not in list(df["Model_entities"]):
                     fn += 1
-        tn = len(self.model.doc(df["Text"])) - len(df["True_entities"])
+        tn = len(self.model(df["Text"])) - len(df["True_entities"])
         return [[tp, tn], [fp, fn]]
             
 
