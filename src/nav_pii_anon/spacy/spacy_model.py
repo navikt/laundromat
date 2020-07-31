@@ -167,12 +167,12 @@ class SpacyModel:
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
         count = 0
         for model_ent in df["Model_entities"]:
-            if model_ent not in df["True_entities"]:
+            if model_ent not in list(df["True_entities"]):
                 fp+=1
             else:
                 tp += 1
             for truth in df["True_entities"]:
-                if truth not in df["Model_entities"]:
+                if truth not in list(df["Model_entities"]):
                     fn += 1
         tn = len(self.model.get_doc(df["Text"])) - len(df["True_entities"])
         return [[tp, tn], [fp, fn]]
@@ -262,7 +262,7 @@ class SpacyModel:
         if(n>len(sorted_node_degrees)):
             n = len(sorted_node_degrees)
         return sorted_node_degrees[:n]
-    
+
     def similarity(self, text:str, complete_rm=False, shuffle=False):
         original = self.model(text)
         censored = self.model(self.replace(text, complete_rm, shuffle))
