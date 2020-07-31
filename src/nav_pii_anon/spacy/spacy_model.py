@@ -51,7 +51,7 @@ class SpacyModel:
         ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
         print(ents)
 
-    def get_doc(self, text: str):
+    def doc(self, text: str):
         return self.model(text)
 
     def display_predictions(self, text: str):
@@ -62,6 +62,9 @@ class SpacyModel:
 
     def enable_ner(self):
         self.disabled.restore()
+
+    def pipeline(self):
+        print(self.model.pipe_names)
 
     def replace(self, text: str, complete_rm=False, shuffle=False):
         """
@@ -146,7 +149,6 @@ class SpacyModel:
             # Check the classes have loaded back consistently
             assert nlp2.get_pipe("ner").move_names == move_names
 
-
     def f1_scorer(self, TEST_DATA):
         scorer = Scorer()
         df = pd.DataFrame(TEST_DATA)
@@ -174,7 +176,7 @@ class SpacyModel:
             for truth in df["True_entities"]:
                 if truth not in list(df["Model_entities"]):
                     fn += 1
-        tn = len(self.model.get_doc(df["Text"])) - len(df["True_entities"])
+        tn = len(self.model.doc(df["Text"])) - len(df["True_entities"])
         return [[tp, tn], [fp, fn]]
             
 
