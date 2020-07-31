@@ -161,7 +161,7 @@ class SpacyModel:
         return scorer.scores #, scorer.textcat_score, scorer.textcats_per_cat
 
     def confusion_matrix(self, TEST_DATA):
-        tp, fn, fp = 0
+        tp, fn, fp = 0, 0, 0
         df = pd.DataFrame(TEST_DATA)
         df.columns = ["Text", "True_entities"]
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
