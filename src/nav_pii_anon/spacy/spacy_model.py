@@ -160,6 +160,25 @@ class SpacyModel:
             scorer.score(pred, gold)
         return scorer.scores #, scorer.textcat_score, scorer.textcats_per_cat
 
+    def confusion_matrix(self, TEST_DATA):
+        tp, fn, fp = 0
+        df = pd.DataFrame(TEST_DATA)
+        df.columns = ["Text", "True_entities"]
+        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
+        count = 0
+        for model_ent in df["Model_entities"]:
+            if model_ent not in df["True_entities"]:
+                fp+=1
+            else:
+                tp += 1
+            for truth in df["True_entities"]:
+                if truth not in df["Model_entities"]:
+                    fn += 1
+        tn = len(self.model.get_doc(df["Text"])) - len(df["True_entities"])
+        return [[tp, tn], [fp, fn]]
+            
+
+
     def test(self, TEST_DATA):
         """
         Tests the model on the given test data. Since identifying sensitive information is more important
