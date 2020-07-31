@@ -7,7 +7,7 @@ class RegexAccountNumber(RegexBase):
         """
         TODO Add validation or change pattern as this one overlaps with personnummer
         """
-        return r"(\b\d{11})|(\d{4}(\.|\s)\d{2}(\.|\s)\d{5}\b)"
+        return r"(?<!\d)(\d{11})|(\d{4}(\.|\s)\d{2}(\.|\s)\d{5}\b)(?!\s*\d)"
 
     @property
     def context(self):

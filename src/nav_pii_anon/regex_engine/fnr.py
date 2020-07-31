@@ -45,7 +45,7 @@ class RegexFnr(RegexBase):
 
     @property
     def regex_pattern(self):
-        return r"(\b\d{11}\b)|(\b\d{6}\s\d{5}\b)"
+        return r"(?<!\d)(\d{11}\b)|(\b\d{6}\s\d{5})(?!\s*\d)"
 
     @property
     def context(self):
