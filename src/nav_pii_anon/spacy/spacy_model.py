@@ -3,20 +3,21 @@ import random
 import warnings
 from itertools import zip_longest
 from pathlib import Path
+
+import networkx as nx
 import numpy as np
 import pandas as pd
 import plac
 import spacy
+from nav_pii_anon.spacy.data_handler import get_data
 from nav_pii_anon.spacy.matcher_list import csv_list_matcher
 from nav_pii_anon.spacy.matcher_regex import match_func
-from nav_pii_anon.spacy.data_handler import get_data
 from sklearn.metrics import f1_score
 from spacy import displacy
 from spacy.gold import GoldParse
 from spacy.matcher import Matcher
 from spacy.scorer import Scorer
 from spacy.util import compounding, minibatch
-import networkx as nx
 
 
 class SpacyModel:
@@ -157,7 +158,7 @@ class SpacyModel:
             gold = GoldParse(doc, entities=ents["entities"])
             pred = self.get_doc(txt)
             scorer.score(pred, gold)
-        return scorer.scores
+        return scorer.scores #, scorer.textcat_score, scorer.textcats_per_cat
 
     def test(self, TEST_DATA):
         """
@@ -247,4 +248,3 @@ class SpacyModel:
         original = self.model(text)
         censored = self.model(self.replace(text, complete_rm, shuffle))
         return original.similarity(censored)
-
