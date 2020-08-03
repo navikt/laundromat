@@ -166,7 +166,7 @@ class SpacyModel:
         return scorer.scores #, scorer.textcat_score, scorer.textcats_per_cat
 
     def confusion_matrix(self, TEST_DATA):
-        tp, fn, fp = 0, 0, 0
+        tp, fn, fp, tn = 0, 0, 0, 0
         df = pd.DataFrame(TEST_DATA)
         df.columns = ["Text", "True_entities"]
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
@@ -180,8 +180,8 @@ class SpacyModel:
                 if truth not in list(df["Model_entities"]):
                     fn += 1
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
-            tn += int(len(model))
-            tn -= int(len(truth))
+            tn += int(len(model["entities"]))
+            tn -= int(len(truth["entities"]))
         return [[tp, tn], [fp, fn]]
             
 
@@ -284,13 +284,18 @@ class SpacyModel:
         df = pd.DataFrame(test)
         df.columns = ["Text", "True_entities"]
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
-        count = 0
-        for model_ent in df["Model_entities"]:
-            print(model_ent)
-            for true_ent in df["True_entities"]:
-                if (true_ent[0]<=model_ent[0]<=true_ent[1]) or (true_ent[0]<=model_ent[1]<=true_ent[1]):
-                    positive += 1
-                else:
-                    negative += 1
+        
+        for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
+            if not model:
+                negative += len(truth["entities"])
+            elif not truth:
+                negative += len(model["entities"])
+            else:
+                for ents_m in model["entities"]:
+                    for ents_t in truth["entities"]:
+                        if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
+                            positive += 1
+                        else:
+                            negative += 1
         return positive/(positive+negative)
 
