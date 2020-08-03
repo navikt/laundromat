@@ -66,7 +66,7 @@ class SpacyModel:
     def pipeline(self):
         print(self.model.pipe_names)
 
-    def replace(self, text: str, complete_rm=False, shuffle=False):
+    def replace(self, text: str, replacement = "entity", replacement_char = "~"):
         """
         Replaces found entities in the given text with the attendant entity labels,
         e.g. a name is replaced with <PER>.
@@ -78,14 +78,16 @@ class SpacyModel:
         censored_text = text  # Redundant variable?
         ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
 
-        if not shuffle:
+        if replacement=="entity":
             for ent in ents:
-                if complete_rm:
-                    censored_text = censored_text.replace(ent[0], "~")
-                else:
-                    censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
-            return censored_text
-        else:
+                censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
+        elif replacement=="character":
+            for ent in ents:
+                censored_text = censored_text.replace(ent[0], replacement_char)
+        elif replacement=="pad":
+            for ent in ents:
+                censored_text = censored_text.replace(ent[0], replacement_char*len(ent[0]))
+        elif replacement=="shuffle":
             girls_names = get_data('jentefornavn_ssb.csv')['fornavn']
             boys_names = get_data('guttefornavn_ssb.csv')['fornavn']
             name_list = girls_names.append(boys_names, ignore_index=True)
@@ -102,8 +104,9 @@ class SpacyModel:
                     censored_text = censored_text.replace(ent[0], loc_list[np.random.randint(0, len(loc_list))])
                 else:
                     censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
-
-            return censored_text
+        else:
+            raise ValueError("replacement must be either entity, character, pad, or shuffle")
+        return censored_text
 
     def train(self, TRAIN_DATA, labels: list, n_iter: int = 30, output_dir=None):
 
@@ -256,7 +259,7 @@ class SpacyModel:
             for child in token.children:
                 edges.append(('{0}'.format(token.lower_),
                             '{0}'.format(child.lower_)))
-        return nx.Graph(edges)
+        return nx.DiGraph(edges)
 
     def top_n_nodes(self, text:str, n=10):
         graph = self.dependency_graph(text)
@@ -265,7 +268,26 @@ class SpacyModel:
             n = len(sorted_node_degrees)
         return sorted_node_degrees[:n]
 
-    def similarity(self, text:str, complete_rm=False, shuffle=False):
+    def similarity(self, text:str, replacement = "entity", replacement_char = "~"):
         original = self.model(text)
-        censored = self.model(self.replace(text, complete_rm, shuffle))
+        censored = self.model(self.replace(text, ))
         return original.similarity(censored)
+
+    def accuracy(self, test):
+        """
+        A very lenient accuracy measure. If there is any overlap between the predicted entity label and the 
+        true entity label then it is considered a true positive. The labels still have to be the same.
+        """
+        negative, positive = 0, 0
+        df = pd.DataFrame(test)
+        df.columns = ["Text", "True_entities"]
+        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
+        count = 0
+        for model_ent in df["Model_entities"]:
+            for true_ent in df["True_entities"]:
+                if (true_ent[0]<=model_ent[0]<=true_ent[1]) or (true_ent[0]<=model_ent[1]<=true_ent[1]):
+                    positive += 1
+                else:
+                    negative += 1
+        return positive/(positive+negative)
+
