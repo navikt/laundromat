@@ -170,18 +170,19 @@ class SpacyModel:
         df = pd.DataFrame(TEST_DATA)
         df.columns = ["Text", "True_entities"]
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
-        count = 0
-        for model_ent in df["Model_entities"]:
-            if model_ent not in list(df["True_entities"]):
-                fp+=1
-            else:
-                tp += 1
-            for truth in df["True_entities"]:
-                if truth not in list(df["Model_entities"]):
-                    fn += 1
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
-            tn += int(len(model["entities"]))
-            tn -= int(len(truth["entities"]))
+            ents_m = model["entities"]
+            ents_t = truth["entities"]
+            for ent in ents_m:
+                if ent not in ents_t:
+                    fp += 1
+                else:
+                    tp += 1
+            for ent in ents_t:
+                if ent not in ents_m:
+                    fn += 1
+            tn += int(len(ents_m))
+            tn -= int(len(ents_t))
         return [[tp, tn], [fp, fn]]
             
 
@@ -280,22 +281,16 @@ class SpacyModel:
         A very lenient accuracy measure. If there is any overlap between the predicted entity label and the 
         true entity label then it is considered a true positive. The labels still have to be the same.
         """
-        negative, positive = 0, 0
+        positive = 0
         df = pd.DataFrame(test)
         df.columns = ["Text", "True_entities"]
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
         
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
-            if not model:
-                negative += len(truth["entities"])
-            elif not truth:
-                negative += len(model["entities"])
-            else:
-                for ents_m in model["entities"]:
-                    for ents_t in truth["entities"]:
-                        if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
-                            positive += 1
-                        else:
-                            negative += 1
+            for ents_m in model["entities"]:
+                for ents_t in truth["entities"]:
+                    if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
+                        positive += 1
+            negative += len(truth["entities"])
         return positive/(positive+negative)
 
