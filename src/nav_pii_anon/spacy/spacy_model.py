@@ -286,6 +286,7 @@ class SpacyModel:
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
         count = 0
         for model_ent in df["Model_entities"]:
+            print(model_ent)
             for true_ent in df["True_entities"]:
                 if (true_ent[0]<=model_ent[0]<=true_ent[1]) or (true_ent[0]<=model_ent[1]<=true_ent[1]):
                     positive += 1
