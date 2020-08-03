@@ -179,7 +179,9 @@ class SpacyModel:
             for truth in df["True_entities"]:
                 if truth not in list(df["Model_entities"]):
                     fn += 1
-        tn = len(self.model(df["Text"])) - len(df["True_entities"])
+        for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
+            tn += int(len(model))
+            tn -= int(len(truth))
         return [[tp, tn], [fp, fn]]
             
 
