@@ -182,7 +182,7 @@ class SpacyModel:
                 if ent not in ents_m:
                     fn += 1
             tn += int(len(ents_m))
-            tn -= int(len(ents_t))
+        tn -= fp+tp
         return [[tp, tn], [fp, fn]]
             
 
@@ -281,7 +281,7 @@ class SpacyModel:
         A very lenient accuracy measure. If there is any overlap between the predicted entity label and the 
         true entity label then it is considered a true positive. The labels still have to be the same.
         """
-        positive = 0
+        positive, negative = 0, 0
         df = pd.DataFrame(test)
         df.columns = ["Text", "True_entities"]
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
