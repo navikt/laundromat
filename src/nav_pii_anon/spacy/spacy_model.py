@@ -226,13 +226,14 @@ class SpacyModel:
         df = pd.DataFrame(test)
         df.columns = ["Text", "True_entities"]
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
-        
+        df["total"] = df["Text"].apply(lambda x: len(self.model(x)))
+        total = df["total"].sum()
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
             for ents_m in model["entities"]:
                 for ents_t in truth["entities"]:
                     if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
                         positive += 1
-            negative += len(truth["entities"])
+        negative = total - positive
         return positive, negative
 
     def test(self, TEST_DATA):
