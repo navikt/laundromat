@@ -201,20 +201,24 @@ class SpacyModel:
         df = pd.DataFrame(TEST_DATA)
         df.columns = ["Text", "True_entities"]
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
+        df["total"] = df["Text"].apply(lambda x: len(self.model(x)))
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
             ents_m = model["entities"]
             ents_t = truth["entities"]
+            overlap = 0
             for ent in ents_m:
-                if ent not in ents_t:
-                    fp += 1
-                else:
+                if (ents_t[0] == ents_m[0]) and (ents_m[1] == ents_t[1]):
                     tp += 1
+                    overlap += 1
+                else:
+                    fp += 1
             for ent in ents_t:
-                if ent not in ents_m:
+                if (ents_t[0] == ents_m[0]) and (ents_m[1] == ents_t[1]):
+                    pass
+                else:
                     fn += 1
-        
-        df["tn"] = df["Text"].apply(lambda x: len(self.model(x)))
-        tn = df["tn"].sum() - tp-fn-fp
+            tn = tn -(len(ents_m)-overlap) -len(ents_t)
+        tn += df["total"].sum()
         return [[tp, tn], [fp, fn]]
             
     def accuracy(self, test):
@@ -226,13 +230,12 @@ class SpacyModel:
         df = pd.DataFrame(test)
         df.columns = ["Text", "True_entities"]
         df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
-        df["total"] = df["Text"].apply(lambda x: len(self.model(x)))
-        total = df["total"].sum()
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
             for ents_m in model["entities"]:
                 for ents_t in truth["entities"]:
                     if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
                         positive += 1
+                negative += len  
         negative = total - positive
         return positive, negative
 
