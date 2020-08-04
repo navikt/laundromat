@@ -233,7 +233,7 @@ class SpacyModel:
                     if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
                         positive += 1
             negative += len(truth["entities"])
-        return positive/(positive+negative)
+        return positive, negative
 
     def test(self, TEST_DATA):
         """
