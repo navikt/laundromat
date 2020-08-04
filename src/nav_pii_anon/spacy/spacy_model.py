@@ -77,7 +77,7 @@ class SpacyModel:
         options = {"ents": ["LOC", "PER", "FNR", "AMOUNT", "MEDICAL_CONDITIONS", "TLF", "DTM", "CREDIT_CARD"],
                    "colors": colors
                    }
-        displacy.render(self.get_doc(text), style='ent', jupyter=True, options=options)
+        displacy.render(self.doc(text), style='ent', jupyter=True, options=options)
 
     def disable_ner(self):
         """
