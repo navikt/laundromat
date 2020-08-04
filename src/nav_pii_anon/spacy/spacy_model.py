@@ -325,7 +325,6 @@ class SpacyModel:
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
             for ents_m in model["entities"]:
                 for ents_t in truth["entities"]:
-                    print(ents_m, ents_t)
                     if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
                         positive += 1
             negative += len(truth["entities"])
