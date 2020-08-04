@@ -184,6 +184,9 @@ class SpacyModel:
             assert nlp2.get_pipe("ner").move_names == move_names
 
     def f1_scorer(self, TEST_DATA):
+        """
+        Ignores data of the wrong format. If this is a problem, use print_scores instead.
+        """
         scorer = Scorer()
         df = pd.DataFrame(TEST_DATA)
         df.columns = ["Text", "True_entities"]
@@ -197,6 +200,9 @@ class SpacyModel:
         return scorer.scores #, scorer.textcat_score, scorer.textcats_per_cat
 
     def confusion_matrix(self, TEST_DATA, strict = True):
+        """
+        Calculates confusion matrix for given data.
+        """
         tp, fn, fp, tn = 0, 0, 0, 0
         df = pd.DataFrame(TEST_DATA)
         df.columns = ["Text", "True_entities"]
@@ -213,7 +219,7 @@ class SpacyModel:
                             tp += 1
                             overlap += 1
                     else:
-                        if (t[0] <= m[0] <=t[1]) and (t[0] <= m[1] <= t[1]):
+                        if (t[0] <= m[0] <=t[1]) or (t[0] <= m[1] <= t[1]):
                             tp += 1
                             overlap += 1
             fp += len(ents_m) - overlap
