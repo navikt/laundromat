@@ -56,14 +56,13 @@ def overlap_solver(span, doc, ent):
         #Creates a new entity with the label overlap
         start = min(span.start, ent.start)
         end = max(span.end, ent.end)
-        doc.ents.remove(ent)
+        doc.ents = list(doc.ents).remove(ent)
         new_span = doc.char_span(start, end, label="OVERLAP")
         doc.ents = list(doc.ents) + [new_span]
     else:
         if len(span.text) > len(ent.text):
             #Discards the old entity and replaces it with the new one
-            print(doc.ents)
-            doc.ents.remove(ent)
+            doc.ents = list(doc.ents).remove(ent)
             doc.ents = list(doc.ents) + [span]
         else:
             pass
