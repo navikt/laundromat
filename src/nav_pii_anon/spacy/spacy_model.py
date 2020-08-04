@@ -220,11 +220,11 @@ class SpacyModel:
     
     def print_scores(self, TEST_DATA):
         cf = self.confusion_matrix(TEST_DATA)
-        true_positive = cd["Is Positive"].iloc[0]
-        true_negative = cd["Is Negative"].iloc[1]
-        false_positive = cd["Is Negative"].iloc[0]
-        false_negative = cd["Is Positive"].iloc[1]
-        accuracy = (true_positive+true_negative)/cd.values.sum()
+        true_positive = cf["Is Positive"].iloc[0]
+        true_negative = cf["Is Negative"].iloc[1]
+        false_positive = cf["Is Negative"].iloc[0]
+        false_negative = cf["Is Positive"].iloc[1]
+        accuracy = (true_positive+true_negative)/cf.values.sum()
         precision = tp/(tp+fp)
         specificity = tn/(tn+fp)
         recall = tp/(tp+fn)
