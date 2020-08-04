@@ -63,6 +63,7 @@ def overlap_solver(span, doc, ent):
         if len(span.text) > len(ent.text):
             #Discards the old entity and replaces it with the new one
             doc.ents.remove(ent)
+            doc.ents.remove(ent)
             doc.ents = list(doc.ents) + [span]
         else:
             pass
