@@ -18,7 +18,7 @@ def match_func(doc):
             spans.append(span)
             if not overlap(span, doc):
                 doc.ents = list(doc.ents) + [span]
-    if spans is not none:
+    if spans is not None:
         for span in spans:
             span.merge()
     return doc
