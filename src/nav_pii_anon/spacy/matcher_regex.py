@@ -65,7 +65,8 @@ def overlap_solver(span, doc, ent):
             print(ent)
             print(doc.ents)
             print(list(doc.ents))
-            doc.ents = list(doc.ents).remove(ent)
-            doc.ents = list(doc.ents) + [span]
+            new_list = list(doc.ents)
+            new_list.remove(ent)
+            doc.ents = new_list + [span]
         else:
             pass
