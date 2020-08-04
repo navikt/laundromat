@@ -196,7 +196,7 @@ class SpacyModel:
             scorer.score(pred, gold)
         return scorer.scores #, scorer.textcat_score, scorer.textcats_per_cat
 
-    def confusion_matrix(self, TEST_DATA):
+    def confusion_matrix(self, TEST_DATA, strict = True):
         tp, fn, fp, tn = 0, 0, 0, 0
         df = pd.DataFrame(TEST_DATA)
         df.columns = ["Text", "True_entities"]
@@ -208,9 +208,14 @@ class SpacyModel:
             overlap = 0
             for m in model["entities"]:
                 for t in truth["entities"]:
-                    if (t[0] == m[0]) and (m[1] == t[1]):
-                        tp += 1
-                        overlap += 1
+                    if strict:
+                        if (t[0] == m[0]) and (m[1] == t[1]):
+                            tp += 1
+                            overlap += 1
+                    else:
+                        if (t[0] <= m[0] <=t[1]) and (t[0] <= m[1] <= t[1]):
+                            tp += 1
+                            overlap += 1
             fp += len(ents_m) - overlap
             fn += len(ents_t) - overlap
             tn = tn -(len(ents_m)-overlap) -len(ents_t)
@@ -218,8 +223,8 @@ class SpacyModel:
         confusion = pd.DataFrame([[tp, fp], [fn, tn]], index = ["Predicted Positive", "Predicted Negative"], columns=["Is Positive", "Is Negative"])
         return confusion
     
-    def print_scores(self, TEST_DATA):
-        cf = self.confusion_matrix(TEST_DATA)
+    def print_scores(self, TEST_DATA, strict=True):
+        cf = self.confusion_matrix(TEST_DATA, strict)
         true_positive = cf["Is Positive"].iloc[0]
         true_negative = cf["Is Negative"].iloc[1]
         false_positive = cf["Is Negative"].iloc[0]
@@ -236,25 +241,6 @@ class SpacyModel:
         print("Precision is: ", precision)
         print("Recall is: ", recall)
         print("F_1 score is: ", f_1)
-
-
-    def accuracy(self, test):
-        """
-        A very lenient accuracy measure. If there is any overlap between the predicted entity label and the 
-        true entity label then it is considered a true positive. The labels still have to be the same.
-        """
-        positive, negative = 0, 0
-        df = pd.DataFrame(test)
-        df.columns = ["Text", "True_entities"]
-        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
-        for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
-            for ents_m in model["entities"]:
-                for ents_t in truth["entities"]:
-                    if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
-                        positive += 1
-                negative += len  
-        negative = total - positive
-        return positive, negative
 
     def test(self, TEST_DATA):
         """
