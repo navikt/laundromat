@@ -5,8 +5,9 @@ from nav_pii_anon.spacy.regex_formatter import regex_engines
 def match_func(doc):
     """
     Uses regex to find patterns and label them with the given label.
+
     :param doc: The text in doc-format
-    :return: doc: The text in doc-format with added entities
+    :return: The text in doc-format with added entities
     """
     entity_list = regex_engines()
     for entity in entity_list:
@@ -24,9 +25,10 @@ def match_func(doc):
 def overlap(span, doc):
     """
     Checks if two entities overlap
+
     :param span: A span of tokens, that the regex wants to match to a label
     :param doc: The text in doc-format
-    :return: Boolean: Overlap indicator
+    :return: A boolean overlap indicator
     """
     if span is not None:
         for ent in list(doc.ents):
@@ -39,6 +41,14 @@ def overlap(span, doc):
 
 
 def overlap_solver(span, doc, ent):
+    """
+    The actual overlap solver. If the new entity covers more than the old one, it replaces the old one. If it is a
+    partial overlap, it extends both into a new one labeled <OVERLAP>
+
+    :param span: A span of tokens, that the regex wants to match to a label
+    :param doc: The text in doc-format
+    :param ent: The type of entity
+    """
     if span.start == ent.start and span.end == ent.end:
         #Keeps the previous entity and discards the new one
         pass
