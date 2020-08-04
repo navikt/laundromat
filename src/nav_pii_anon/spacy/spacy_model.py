@@ -225,9 +225,9 @@ class SpacyModel:
         false_positive = cf["Is Negative"].iloc[0]
         false_negative = cf["Is Positive"].iloc[1]
         accuracy = (true_positive+true_negative)/cf.values.sum()
-        precision = tp/(tp+fp)
-        specificity = tn/(tn+fp)
-        recall = tp/(tp+fn)
+        precision = true_positive/(true_positive+false_positive)
+        specificity = true_negative/(true_negative+false_positive)
+        recall = true_positive/(true_positive+false_negative)
         balanced_accuracy = (recall+specificity)/2
         f_1 = 2*tp/(2*tp+fp+fn)
 
