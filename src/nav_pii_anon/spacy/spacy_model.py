@@ -24,7 +24,9 @@ class SpacyModel:
 
     def __init__(self, model=None):
         """
-        SpacyModel class: A class for managing a SpaCy nlp model with methods for adding custom RegEx and for easy printing
+        SpacyModel class: A class for managing a SpaCy nlp model with methods for adding custom RegEx and for
+        easy printing
+
         :param model: an nlp model
         """
         if not model:
@@ -36,6 +38,7 @@ class SpacyModel:
     def add_patterns(self, entities: list = None):
         """
         Adds desired patterns to the entity ruler of the SpaCy model
+
         :param entities: a list of strings denoting which entities the nlp model should detect.
         """
         ruler = csv_list_matcher(self.model)
@@ -45,6 +48,7 @@ class SpacyModel:
     def predict(self, text: str):
         """
         Prints the found entities, their labels, start, and end index.
+
         :param text: a string of text which is to be analysed.
         """
         doc = self.model(text)
@@ -52,15 +56,41 @@ class SpacyModel:
         print(ents)
 
     def doc(self, text: str):
+        """
+        A method to return the doc, thus all its meta info.
+
+        :param text: A text string to be ran through the model
+        :return: A text in doc-format
+        """
         return self.model(text)
 
     def display_predictions(self, text: str):
-        displacy.render(self.model(text), style='ent', jupyter=True)
+        colors = {"PER": "linear-gradient(10deg, #FF3333, #FF9933)",
+                  "FNR": "linear-gradient(90deg, #AD0CA3, #AD0C3A)",
+                  "TLF": "linear-gradient(10deg, #6BFF33, #F1B141)",
+                  "AMOUNT": "linear-gradient(10deg, #aa9cfc, #fc9ce7)",
+                  "LOC": "linear-gradient(10deg, #33FFF6, #33B2FF)",
+                  "CREDIT_CARD": "linear-gradient(10deg, #9CF9B3, #F6F99C)",
+                  "DTM": "linear-gradient(10deg, #0A7E2F, #0EAD0C)",
+                  }
+
+        options = {"ents": ["LOC", "PER", "FNR", "AMOUNT", "MEDICAL_CONDITIONS", "TLF", "DTM", "CREDIT_CARD"],
+                   "colors": colors
+                   }
+        displacy.render(self.get_doc(text), style='ent', jupyter=True, options=options)
 
     def disable_ner(self):
+        """
+        Disables the NER-model in the pipeline
+
+        """
         self.disabled = self.model.disable_pipes("ner")
 
     def enable_ner(self):
+        """
+        Enables the NER-model in the pipeline
+
+        """
         self.disabled.restore()
 
     def pipeline(self):
@@ -112,10 +142,11 @@ class SpacyModel:
 
         """
         Takes the training data and trains the wanted entities. Also saves the model if a output path is given
-        :param TRAIN_DATA:
+
+        :param TRAIN_DATA: training data
         :param labels: texts with labels
         :param n_iter: number
-        :param output_dir:
+        :param output_dir: Where the model should be saved
         """
 
         ner = self.model.get_pipe("ner")
@@ -196,9 +227,12 @@ class SpacyModel:
         stricter F1 score. For our custom score metric, each correct entity represents 1 point.
         Each token correctly labeled represents 1/n points where n is the number of tokens
         in the entity.
+
         TODO Case in which one is contained in the other has been simplified
+
         TODO No functionality for which entity label has been applied
-        returns: a custom score, and the F_1 score
+
+        :returns: a custom score, and the F_1 score
         """
         y_true = []
         y_pred = []

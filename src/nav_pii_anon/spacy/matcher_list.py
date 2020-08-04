@@ -7,8 +7,9 @@ def csv_list_matcher(nlp):
     """
     Reads csv-files for names and surnames and uses EntityRuler to match to a entity and return to be added to
     the model pipeline
-    :param nlp:
-    :return: ruler:
+
+    :param nlp: The Spacy model
+    :return: The ruler containing the new pattern rules to be included in the pipeline
     """
     names_list = []
     loc_list = []

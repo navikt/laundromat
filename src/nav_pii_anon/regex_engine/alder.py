@@ -27,4 +27,4 @@ class RegexAccountNumber(RegexBase):
         if(int(age)<0 or int(age)>110):
             return 0.0
         else:
-            return 0.5    
+            return 0.5

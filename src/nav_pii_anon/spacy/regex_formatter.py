@@ -9,6 +9,7 @@ from nav_pii_anon.regex_engine.date_time import RegexDateTime
 def regex_formatter(entities: list = None):
     """
     Formats desired entities such that they can be fed to SpaCy's entity ruler
+
     :param entities: a list of strings denoting which entities one wishes to include in the model
     """
     labels = all_possible_labels()
