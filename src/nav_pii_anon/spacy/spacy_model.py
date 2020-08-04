@@ -206,17 +206,13 @@ class SpacyModel:
             ents_m = model["entities"]
             ents_t = truth["entities"]
             overlap = 0
-            for ent in ents_m:
-                if (ents_t[0] == ents_m[0]) and (ents_m[1] == ents_t[1]):
-                    tp += 1
-                    overlap += 1
-                else:
-                    fp += 1
-            for ent in ents_t:
-                if (ents_t[0] == ents_m[0]) and (ents_m[1] == ents_t[1]):
-                    pass
-                else:
-                    fn += 1
+            for m in model["entities"]:
+                for t in truth["entities"]:
+                    if (t[0] == m[0]) and (m[1] == t[1]):
+                        tp += 1
+                        overlap += 1
+            fp += len(ents_m) - overlap
+            fn += len(ents_t) - overlap
             tn = tn -(len(ents_m)-overlap) -len(ents_t)
         tn += df["total"].sum()
         return [[tp, tn], [fp, fn]]
