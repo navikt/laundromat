@@ -55,7 +55,7 @@ class SpacyModel:
         ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
         print(ents)
 
-    def get_doc(self, text: str):
+    def doc(self, text: str):
         """
         A method to return the doc, thus all its meta info.
 
@@ -65,11 +65,6 @@ class SpacyModel:
         return self.model(text)
 
     def display_predictions(self, text: str):
-        """
-        Method to visualize the predicted entities
-
-        :param text: A string of text
-        """
         colors = {"PER": "linear-gradient(10deg, #FF3333, #FF9933)",
                   "FNR": "linear-gradient(90deg, #AD0CA3, #AD0C3A)",
                   "TLF": "linear-gradient(10deg, #6BFF33, #F1B141)",
@@ -98,7 +93,10 @@ class SpacyModel:
         """
         self.disabled.restore()
 
-    def replace(self, text: str, complete_rm=False, shuffle=False):
+    def pipeline(self):
+        print(self.model.pipe_names)
+
+    def replace(self, text: str, replacement = "entity", replacement_char = "~"):
         """
         Replaces found entities in the given text with the attendant entity labels,
         e.g. a name is replaced with <PER>.
@@ -110,14 +108,16 @@ class SpacyModel:
         censored_text = text  # Redundant variable?
         ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
 
-        if not shuffle:
+        if replacement=="entity":
             for ent in ents:
-                if complete_rm:
-                    censored_text = censored_text.replace(ent[0], "~")
-                else:
-                    censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
-            return censored_text
-        else:
+                censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
+        elif replacement=="character":
+            for ent in ents:
+                censored_text = censored_text.replace(ent[0], replacement_char)
+        elif replacement=="pad":
+            for ent in ents:
+                censored_text = censored_text.replace(ent[0], replacement_char*len(ent[0]))
+        elif replacement=="shuffle":
             girls_names = get_data('jentefornavn_ssb.csv')['fornavn']
             boys_names = get_data('guttefornavn_ssb.csv')['fornavn']
             name_list = girls_names.append(boys_names, ignore_index=True)
@@ -134,8 +134,9 @@ class SpacyModel:
                     censored_text = censored_text.replace(ent[0], loc_list[np.random.randint(0, len(loc_list))])
                 else:
                     censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
-
-            return censored_text
+        else:
+            raise ValueError("replacement must be either entity, character, pad, or shuffle")
+        return censored_text
 
     def train(self, TRAIN_DATA, labels: list, n_iter: int = 30, output_dir=None):
 
@@ -182,7 +183,6 @@ class SpacyModel:
             # Check the classes have loaded back consistently
             assert nlp2.get_pipe("ner").move_names == move_names
 
-
     def f1_scorer(self, TEST_DATA):
         scorer = Scorer()
         df = pd.DataFrame(TEST_DATA)
@@ -192,9 +192,33 @@ class SpacyModel:
 
             #Gold refers to the correct entity labels
             gold = GoldParse(doc, entities=ents["entities"])
-            pred = self.get_doc(txt)
+            pred = self.model(txt)
             scorer.score(pred, gold)
         return scorer.scores #, scorer.textcat_score, scorer.textcats_per_cat
+
+    def confusion_matrix(self, TEST_DATA):
+        tp, fn, fp, tn = 0, 0, 0, 0
+        df = pd.DataFrame(TEST_DATA)
+        df.columns = ["Text", "True_entities"]
+        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
+        for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
+            ents_m = model["entities"]
+            ents_t = truth["entities"]
+            for ent in ents_m:
+                if ent not in ents_t:
+                    fp += 1
+                else:
+                    tp += 1
+            for ent in ents_t:
+                if ent not in ents_m:
+                    fn += 1
+            tn += int(len(ents_m))
+        
+
+        tn -= tp+fp
+        return [[tp, tn], [fp, fn]]
+            
+
 
     def test(self, TEST_DATA):
         """
@@ -274,7 +298,7 @@ class SpacyModel:
             for child in token.children:
                 edges.append(('{0}'.format(token.lower_),
                             '{0}'.format(child.lower_)))
-        return nx.Graph(edges)
+        return nx.DiGraph(edges)
 
     def top_n_nodes(self, text:str, n=10):
         graph = self.dependency_graph(text)
@@ -282,8 +306,28 @@ class SpacyModel:
         if(n>len(sorted_node_degrees)):
             n = len(sorted_node_degrees)
         return sorted_node_degrees[:n]
-    
-    def similarity(self, text:str, complete_rm=False, shuffle=False):
+
+    def similarity(self, text:str, replacement = "entity", replacement_char = "~"):
         original = self.model(text)
-        censored = self.model(self.replace(text, complete_rm, shuffle))
+        censored = self.model(self.replace(text, replacement,replacement_char))
         return original.similarity(censored)
+
+    def accuracy(self, test):
+        """
+        A very lenient accuracy measure. If there is any overlap between the predicted entity label and the 
+        true entity label then it is considered a true positive. The labels still have to be the same.
+        """
+        positive, negative = 0, 0
+        df = pd.DataFrame(test)
+        df.columns = ["Text", "True_entities"]
+        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
+        
+        for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
+            for ents_m in model["entities"]:
+                for ents_t in truth["entities"]:
+                    print(ents_m, ents_t)
+                    if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
+                        positive += 1
+            negative += len(truth["entities"])
+        return positive/(positive+negative)
+
