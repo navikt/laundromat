@@ -64,10 +64,10 @@ def overlap_solver(span, doc, ent):
             #Discards the old entity and replaces it with the new one
             print(ent)
             print(doc.ents)
-            print(list(doc.ents))
             new_list = list(doc.ents)
             new_list.remove(ent)
             print(new_list)
+            print(new_list + [span])
             doc.ents = new_list + [span]
             print("====")
         else:
