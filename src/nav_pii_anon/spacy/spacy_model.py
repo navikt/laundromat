@@ -212,10 +212,9 @@ class SpacyModel:
             for ent in ents_t:
                 if ent not in ents_m:
                     fn += 1
-            tn += int(len(ents_m))
         
-
-        tn -= tp+fp
+        df["tn"] = df["Text"].apply(lambda x: len(self.model(x)))
+        tn = df["tn"].sum() - tp-fn-fp
         return [[tp, tn], [fp, fn]]
             
     def accuracy(self, test):
