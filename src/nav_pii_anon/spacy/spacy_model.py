@@ -182,7 +182,9 @@ class SpacyModel:
                 if ent not in ents_m:
                     fn += 1
             tn += int(len(ents_m))
-        tn -= fp+tp
+        
+
+        tn -= tp+fp
         return [[tp, tn], [fp, fn]]
             
 
@@ -273,7 +275,7 @@ class SpacyModel:
 
     def similarity(self, text:str, replacement = "entity", replacement_char = "~"):
         original = self.model(text)
-        censored = self.model(self.replace(text, ))
+        censored = self.model(self.replace(text, replacement,replacement_char))
         return original.similarity(censored)
 
     def accuracy(self, test):
@@ -289,6 +291,7 @@ class SpacyModel:
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
             for ents_m in model["entities"]:
                 for ents_t in truth["entities"]:
+                    print(ents_m, ents_t)
                     if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
                         positive += 1
             negative += len(truth["entities"])
