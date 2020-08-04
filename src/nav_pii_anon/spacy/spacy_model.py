@@ -35,14 +35,17 @@ class SpacyModel:
             self.model = model
         self.matcher = Matcher(self.model.vocab)
 
-    def add_patterns(self, entities: list = None):
+    def add_patterns(self, entities: list = None, before_ner = True):
         """
         Adds desired patterns to the entity ruler of the SpaCy model
 
         :param entities: a list of strings denoting which entities the nlp model should detect.
         """
         ruler = csv_list_matcher(self.model)
-        self.model.add_pipe(match_func, name="regex_matcher", before='ner')
+        if before_ner:
+            self.model.add_pipe(match_func, name="regex_matcher", before='ner')
+        else:
+            self.model.add_pipe(match_func, name="regex_matcher", after='ner')
         self.model.add_pipe(ruler, after="ner")
 
     def predict(self, text: str):
@@ -201,7 +204,7 @@ class SpacyModel:
 
     def confusion_matrix(self, TEST_DATA, strict = True):
         """
-        Calculates confusion matrix for given data.
+        Calculates confusion matrix for given data. Only considers whether a token has been labeled and not if it has been labeled correctly.
         """
         tp, fn, fp, tn = 0, 0, 0, 0
         df = pd.DataFrame(TEST_DATA)
@@ -339,6 +342,3 @@ class SpacyModel:
         original = self.model(text)
         censored = self.model(self.replace(text, replacement,replacement_char))
         return original.similarity(censored)
-
-
-
