@@ -215,8 +215,29 @@ class SpacyModel:
             fn += len(ents_t) - overlap
             tn = tn -(len(ents_m)-overlap) -len(ents_t)
         tn += df["total"].sum()
-        return [[tp, tn], [fp, fn]]
-            
+        confusion = pd.DataFrame([[tp, fp], [fn, tn]], index = ["Predicted Positive", "Predicted Negative"], columns=["Is Positive", "Is Negative"])
+        return confusion
+    
+    def print_scores(self, TEST_DATA):
+        cf = self.confusion_matrix(TEST_DATA)
+        true_positive = cd["Is Positive"].iloc[0]
+        true_negative = cd["Is Negative"].iloc[1]
+        false_positive = cd["Is Negative"].iloc[0]
+        false_negative = cd["Is Positive"].iloc[1]
+        accuracy = (true_positive+true_negative)/cd.values.sum()
+        precision = tp/(tp+fp)
+        specificity = tn/(tn+fp)
+        recall = tp/(tp+fn)
+        balanced_accuracy = (recall+specificity)/2
+        f_1 = 2*tp/(2*tp+fp+fn)
+
+        print("Accuracy is: ", accuracy)
+        print("Balanced accuracy is: ", balanced_accuracy)
+        print("Precision is: ", precision)
+        print("Recall is: ", recall)
+        print("F_1 score is: ", f_1)
+
+
     def accuracy(self, test):
         """
         A very lenient accuracy measure. If there is any overlap between the predicted entity label and the 
