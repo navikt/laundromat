@@ -218,7 +218,23 @@ class SpacyModel:
         tn -= tp+fp
         return [[tp, tn], [fp, fn]]
             
-
+    def accuracy(self, test):
+        """
+        A very lenient accuracy measure. If there is any overlap between the predicted entity label and the 
+        true entity label then it is considered a true positive. The labels still have to be the same.
+        """
+        positive, negative = 0, 0
+        df = pd.DataFrame(test)
+        df.columns = ["Text", "True_entities"]
+        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
+        
+        for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
+            for ents_m in model["entities"]:
+                for ents_t in truth["entities"]:
+                    if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
+                        positive += 1
+            negative += len(truth["entities"])
+        return positive/(positive+negative)
 
     def test(self, TEST_DATA):
         """
@@ -312,21 +328,5 @@ class SpacyModel:
         censored = self.model(self.replace(text, replacement,replacement_char))
         return original.similarity(censored)
 
-    def accuracy(self, test):
-        """
-        A very lenient accuracy measure. If there is any overlap between the predicted entity label and the 
-        true entity label then it is considered a true positive. The labels still have to be the same.
-        """
-        positive, negative = 0, 0
-        df = pd.DataFrame(test)
-        df.columns = ["Text", "True_entities"]
-        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
-        
-        for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
-            for ents_m in model["entities"]:
-                for ents_t in truth["entities"]:
-                    if (ents_t[0] <= ents_m[0] <= ents_t[1]) or (ents_t[0] <= ents_m[1] <= ents_t[1]):
-                        positive += 1
-            negative += len(truth["entities"])
-        return positive/(positive+negative)
+
 
