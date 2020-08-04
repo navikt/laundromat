@@ -14,7 +14,7 @@ def match_func(doc):
     for entity in entity_list:
         for match in re.finditer(entity.regex_pattern, doc.text):
             start, end = match.span()
-            span = Span(doc, start, end, label=entity.label)
+            span = doc.char_span(start, end, label=entity.label)
             spans.append(span)
             if not overlap(span, doc):
                 doc.ents = list(doc.ents) + [span]
