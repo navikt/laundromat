@@ -200,7 +200,7 @@ class SpacyModel:
         tp, fn, fp, tn = 0, 0, 0, 0
         df = pd.DataFrame(TEST_DATA)
         df.columns = ["Text", "True_entities"]
-        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
+        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
             ents_m = model["entities"]
             ents_t = truth["entities"]
@@ -240,7 +240,7 @@ class SpacyModel:
         number_of_ents = 0
         df = pd.DataFrame(TEST_DATA)
         df.columns = ["Text", "True_entities"]
-        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
+        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
         #print(df.head())
         #print(self.predict("Test text Marius"))
         #Iterate through the prediction and the truth and compare
@@ -320,7 +320,7 @@ class SpacyModel:
         positive, negative = 0, 0
         df = pd.DataFrame(test)
         df.columns = ["Text", "True_entities"]
-        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start, ent.end, ent.label_) for ent in self.model(x).ents]})
+        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
         
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
             for ents_m in model["entities"]:
