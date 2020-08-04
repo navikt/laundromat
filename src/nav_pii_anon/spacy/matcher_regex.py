@@ -64,6 +64,7 @@ def overlap_solver(span, doc, ent):
             #Discards the old entity and replaces it with the new one
             print(ent)
             print(doc.ents)
+            print(list(doc.ents))
             doc.ents = list(doc.ents).remove(ent)
             doc.ents = list(doc.ents) + [span]
         else:
