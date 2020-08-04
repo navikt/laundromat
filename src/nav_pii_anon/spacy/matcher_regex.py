@@ -19,6 +19,9 @@ def match_func(doc):
     return doc
 
 def overlap(span, doc):
-    for entity in doc.ents:
-        if (entity.start <= span.start <= entity.end) or (entity.start <=span.end <=entity.end):
-            return True
+    if span is not None:
+        for entity in doc.ents:
+            if (entity.start <= span.start <= entity.end) or (entity.start <=span.end <=entity.end):
+                return True
+    else:
+        return True
