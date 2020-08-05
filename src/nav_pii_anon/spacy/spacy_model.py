@@ -18,6 +18,7 @@ from spacy.gold import GoldParse
 from spacy.matcher import Matcher
 from spacy.scorer import Scorer
 from spacy.util import compounding, minibatch
+from spacy.tokens import Doc
 
 
 class SpacyModel:
@@ -34,6 +35,7 @@ class SpacyModel:
         else:
             self.model = model
         self.matcher = Matcher(self.model.vocab)
+        Doc.set_extension('ents_regex', default=True)
 
     def add_patterns(self, entities: list = None, before_ner = True):
         """
