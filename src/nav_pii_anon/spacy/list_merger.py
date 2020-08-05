@@ -22,7 +22,8 @@ def merger(doc):
         for ent_regex in correct_regex:
             if ent_ner.start == ent_regex.start and ent_ner.end == ent_regex.end:
                 #Keeps the previous entity and discards the new one
-                merged.append(ent_ner)
+                if (ent_ner not in merged) and (ent_regex not in merged):
+                    merged.append(ent_ner)
                 overlap = True
             elif (ent_ner.start < ent_regex.end < ent_ner.end) or (ent_ner.end > ent_regex.start > ent_ner.start):
                 #Creates a new entity with the label overlap
