@@ -22,10 +22,9 @@ def merger(doc):
                 new_ent = doc.char_span(start, end, label=ent_a.label_)
                 merged += [new_ent]
                 overlap = True
-        if not no_overlap:
+        if not overlap:
             print("No overlap")
             merged.append(ent_a)
-            merged.append(ent_b)
         print(merged)
     print(merged)
     doc.ents = merged
