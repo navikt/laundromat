@@ -1,4 +1,3 @@
-
 import random
 import warnings
 from itertools import zip_longest
@@ -36,9 +35,9 @@ class SpacyModel:
         else:
             self.model = model
         self.matcher = Matcher(self.model.vocab)
-        Doc.set_extension('ents_regex', default=True)
+        Doc.set_extension('ents_regex', force=True, default=True)
 
-    def add_patterns(self, entities: list = None, before_ner = True):
+    def add_patterns(self, entities: list = None, before_ner = False, lookup = False):
         """
         Adds desired patterns to the entity ruler of the SpaCy model
 
@@ -49,7 +48,8 @@ class SpacyModel:
             self.model.add_pipe(match_func, name="regex_matcher", before='ner')
         else:
             self.model.add_pipe(match_func, name="regex_matcher", after='ner')
-        self.model.add_pipe(ruler, after="ner")
+        if lookup:
+            self.model.add_pipe(ruler, after="ner")
         self.model.add_pipe(merger, last = True)
         
 

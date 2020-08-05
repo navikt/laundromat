@@ -17,15 +17,19 @@ def match_func(doc):
             start, end = match.span()
             span = doc.char_span(start, end, label=entity.label)
             if type(span) is not type(None):
-                spans.append(span)
+                if not overlap(span, doc):
+                    spans.append(span)
 
     doc._.ents_regex = spans
     return doc
 
 def overlap(span, doc):
-    if span is not None:
-        for entity in doc.ents:
-            if (entity.start <= span.start <= entity.end) or (entity.start <=span.end <=entity.end):
-                return True
-    else:
-        return True
+    """
+    :param span: Span of words
+    :param doc: The text in doc-format
+    :return: True if overlap
+    """
+    for entity in doc.ents:
+        if (entity.start <= span.start <= entity.end) or (entity.start <=span.end <=entity.end):
+            return True
+    return False
