@@ -12,6 +12,7 @@ import spacy
 from nav_pii_anon.spacy.data_handler import get_data
 from nav_pii_anon.spacy.matcher_list import csv_list_matcher
 from nav_pii_anon.spacy.matcher_regex import match_func
+from nav_pii_anon.spacy.list_merger import merger
 from sklearn.metrics import f1_score
 from spacy import displacy
 from spacy.gold import GoldParse
@@ -49,6 +50,8 @@ class SpacyModel:
         else:
             self.model.add_pipe(match_func, name="regex_matcher", after='ner')
         self.model.add_pipe(ruler, after="ner")
+        self.model.add_pipe(merger, last = True)
+        
 
     def predict(self, text: str):
         """
