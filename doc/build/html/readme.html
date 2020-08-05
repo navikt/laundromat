@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>What Is Occultat? &#8212; Occultat 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="what-is-occultat">
+<h1>What Is Occultat?<a class="headerlink" href="#what-is-occultat" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="protect-your-personal-data-in-text">
+<h2>Protect your personal data in text<a class="headerlink" href="#protect-your-personal-data-in-text" title="Permalink to this headline">¶</a></h2>
+<p>This is a package for anonamyzing norwegian text.</p>
+<p>Occultat uses a mix of matching techniques like Regular expression
+and a statistical model to recognize and remove personal information in norwegian text. The package is
+built around SpaCy NLP. Current functionality of
+the package:</p>
+<ul class="simple">
+<li><p>Detecting named entities related to personal and sensitive information.</p></li>
+<li><p>Censoring texts containing said information.</p></li>
+<li><p>Improving the NER model from new data.</p></li>
+<li><p>Scoring the model with various metrics.</p></li>
+<li><p>Metrics on how “anonymous” a text is.</p></li>
+</ul>
+<p>Supported entities:</p>
+<ul class="simple">
+<li><p>&lt;PER&gt; - Person</p></li>
+<li><p>&lt;DTM&gt; - Date time</p></li>
+<li><p>&lt;TLF&gt; - Telephone number</p></li>
+<li><p>&lt;FNR&gt; - Birth number</p></li>
+<li><p>&lt;AMOUNT&gt; - Social security number</p></li>
+<li><p>&lt;LOC&gt;  - Location</p></li>
+<li><p>&lt;CREDIT_CARD&gt; - Credit card number</p></li>
+</ul>
+</div>
+<div class="section" id="current-performance">
+<h2>Current Performance<a class="headerlink" href="#current-performance" title="Permalink to this headline">¶</a></h2>
+<p>The following table shows the best current performance ran on 500 norwegian training/test data texts.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 42%" />
+<col style="width: 29%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td colspan="2"><p>Enteties</p></td>
+<td><p>Score</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>PER</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>TLF</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>DTM</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>AMOUNT</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>LOC</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>CREDIT_CARD</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>spacy &gt;= 2.3.0</p>
+<p>numpy</p>
+<p>pandas</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Occultat</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">nav_pii_anon</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Petter Nymark, Marius Dioli.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/readme.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

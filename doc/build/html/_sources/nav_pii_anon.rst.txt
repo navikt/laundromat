@@ -1,0 +1,18 @@
+nav\_pii\_anon package
+======================
+
+Subpackages
+-----------
+
+.. toctree::
+
+   nav_pii_anon.regex_engine
+   nav_pii_anon.spacy
+
+Module contents
+---------------
+
+.. automodule:: nav_pii_anon
+   :members:
+   :undoc-members:
+   :show-inheritance:
