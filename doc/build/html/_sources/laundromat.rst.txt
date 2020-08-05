@@ -1,18 +1,18 @@
-nav\_pii\_anon package
-======================
+laundromat package
+==================
 
 Subpackages
 -----------
 
 .. toctree::
 
-   nav_pii_anon.regex_engine
-   nav_pii_anon.spacy
+   laundromat.regex_engine
+   laundromat.spacy
 
 Module contents
 ---------------
 
-.. automodule:: nav_pii_anon
+.. automodule:: laundromat
    :members:
    :undoc-members:
    :show-inheritance:

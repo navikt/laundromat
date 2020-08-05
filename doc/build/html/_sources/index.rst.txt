@@ -1,16 +1,14 @@
-Welcome to Occultat's documentation!
-====================================
 
+Welcome to laundromat's documentation!
+======================================
 .. toctree::
    :maxdepth: 2
-   :caption: Package contents:
+   :caption: Contents:
 
+   laundromat.regex_engine
+   laundromat.spacy
 
-   nav_pii_anon.regex_engine
-   nav_pii_anon.spacy
-
-
-.. include:: ../../readme.rst
+.. include:: ../../README.rst
 
 Indices and tables
 ==================
