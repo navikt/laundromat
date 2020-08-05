@@ -20,8 +20,12 @@ Supported entities:
 
 * <PER> - Person
 * <DTM> - Date time
-* <TLF> (Telephone number)
-* OSV....
+* <TLF> - Telephone number
+* <FNR> - Birth number
+* <AMOUNT> - Social security number
+* <LOC>  - Location
+* <CREDIT_CARD> - Credit card number
+
 
 Current Performance
 -------------------
@@ -35,6 +39,12 @@ The following table shows the best current performance ran on 500 norwegian trai
 | TLF              |   0   |
 +------------------+-------+
 | DTM              |   0   |
++------------------+-------+
+| AMOUNT           |   0   |
++------------------+-------+
+| LOC              |   0   |
++------------------+-------+
+| CREDIT_CARD      |   0   |
 +------------------+-------+
 
 Requirements
