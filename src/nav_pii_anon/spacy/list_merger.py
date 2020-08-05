@@ -26,6 +26,16 @@ def merger(doc):
             print("No overlap")
             merged.append(ent_a)
         print(merged)
+    for ent_b in list2:
+        overlap = False
+        for ent_a in list1:
+            if ent_a.start == ent_b.start and ent_a.end == ent_b.end:
+                overlap = True
+            elif (ent_a.start < ent_b.end < ent_a.end) or (ent_a.end > ent_b.start > ent_a.start):
+                overlap = True
+        if not overlap:
+            print("No overlap")
+            merged.append(ent_b)
     print(merged)
     doc.ents = merged
     return doc
