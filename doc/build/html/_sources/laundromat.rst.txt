@@ -1,0 +1,18 @@
+laundromat package
+==================
+
+Subpackages
+-----------
+
+.. toctree::
+
+   laundromat.regex_engine
+   laundromat.spacy
+
+Module contents
+---------------
+
+.. automodule:: laundromat
+   :members:
+   :undoc-members:
+   :show-inheritance:
