@@ -73,13 +73,13 @@ class SpacyModel:
         return self.model(text)
 
     def display_predictions(self, text: str):
-        colors = {"PER": "linear-gradient(10deg, #FF3333, #FF9933)",
-                  "FNR": "linear-gradient(90deg, #AD0CA3, #AD0C3A)",
-                  "TLF": "linear-gradient(10deg, #6BFF33, #F1B141)",
-                  "AMOUNT": "linear-gradient(10deg, #aa9cfc, #fc9ce7)",
-                  "LOC": "linear-gradient(10deg, #33FFF6, #33B2FF)",
-                  "CREDIT_CARD": "linear-gradient(10deg, #9CF9B3, #F6F99C)",
-                  "DTM": "linear-gradient(10deg, #0A7E2F, #0EAD0C)",
+        colors = {"PER": "#fa7a7a",
+                  "FNR": "#fac77a",
+                  "DTM": "#faf87a",
+                  "TLF": "#8dfa7a",
+                  "AMOUNT": "#7afadc",
+                  "LOC": "#7a91fa",
+                  "CREDIT_CARD": "#e97afa",
                   }
 
         options = {"ents": ["LOC", "PER", "FNR", "AMOUNT", "MEDICAL_CONDITIONS", "TLF", "DTM", "CREDIT_CARD"],
