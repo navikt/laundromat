@@ -9,10 +9,10 @@ import numpy as np
 import pandas as pd
 import plac
 import spacy
-from nav_pii_anon.spacy.data_handler import get_data
-from nav_pii_anon.spacy.matcher_list import csv_list_matcher
-from nav_pii_anon.spacy.matcher_regex import match_func
-from nav_pii_anon.spacy.list_merger import merger
+from laundromat.spacy.data_handler import get_data
+from laundromat.spacy.matcher_list import csv_list_matcher
+from laundromat.spacy.matcher_regex import match_func
+from laundromat.spacy.list_merger import merger
 from sklearn.metrics import f1_score
 from spacy import displacy
 from spacy.gold import GoldParse

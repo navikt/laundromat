@@ -1,5 +1,5 @@
 import re
-from nav_pii_anon.spacy.regex_formatter import regex_engines
+from laundromat.spacy.regex_formatter import regex_engines
 from spacy.tokens import Doc, Span, Token
 
 def match_func(doc):

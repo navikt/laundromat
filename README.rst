@@ -1,11 +1,11 @@
-=================
-What Is Occultat?
-=================
+===================
+What Is Laundromat?
+===================
 Protect your personal data in text
 ----------------------------------
 This is a package for anonamyzing norwegian text.
 
-Occultat uses a mix of matching techniques like Regular expression
+Laundromat uses a mix of matching techniques like Regular expression
 and a statistical model to recognize and remove personal information in norwegian text. The package is
 built around SpaCy NLP. Current functionality of
 the package:

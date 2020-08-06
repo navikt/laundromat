@@ -1,8 +1,8 @@
-from nav_pii_anon.regex_engine.fnr import RegexFnr
-from nav_pii_anon.regex_engine.credit_card import RegexCreditCard
-from nav_pii_anon.regex_engine.tlfnr import RegexTlfNr
-from nav_pii_anon.regex_engine.amount import RegexAmount
-from nav_pii_anon.regex_engine.date_time import RegexDateTime
+from laundromat.regex_engine.fnr import RegexFnr
+from laundromat.regex_engine.credit_card import RegexCreditCard
+from laundromat.regex_engine.tlfnr import RegexTlfNr
+from laundromat.regex_engine.amount import RegexAmount
+from laundromat.regex_engine.date_time import RegexDateTime
 
 # TODO Keeping for now, consider removing later
 

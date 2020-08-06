@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from spacy.pipeline import EntityRuler
-from nav_pii_anon.spacy.data_handler import get_data
+from laundromat.spacy.data_handler import get_data
 
 def csv_list_matcher(nlp):
     """

@@ -10,7 +10,7 @@ with open('VERSION') as f:
 
 
 setup(
-    name='nav-pii-anon',
+    name='laundromat',
     version=version,
     packages=find_packages('src'),
     package_dir={'': 'src'},
@@ -25,6 +25,6 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7'
     ],
-    package_data={'nav_pii_anon': ['spacy/data/*.csv']}
+    package_data={'laundromat': ['spacy/data/*.csv']}
 
 )

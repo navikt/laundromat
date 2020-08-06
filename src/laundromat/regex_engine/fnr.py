@@ -1,4 +1,4 @@
-from nav_pii_anon.regex_engine.regex_base import RegexBase
+from laundromat.regex_engine.regex_base import RegexBase
 import spacy
 import re
 import numpy as np
