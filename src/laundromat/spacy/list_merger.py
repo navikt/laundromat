@@ -6,7 +6,6 @@ def merger(doc):
     """
     list_ner, list_regex = doc.ents, doc._.ents_regex
 
-    print("List_ner", list_ner, "List_regex", list_regex)
     #Remove overlap from regex list
     correct_regex = []
     start_index_list = []
@@ -18,8 +17,6 @@ def merger(doc):
             correct_regex.append(ent)
             start_index_list.append(ent.start_char)
             end_index_list.append(ent.end_char)
-
-    print("Correct_regex", correct_regex)
     merged = list(list_ner)
     start_index_list = [ent.start for ent in list_ner]
     end_index_list = [ent.end for ent in list_ner]
@@ -30,8 +27,6 @@ def merger(doc):
             merged.append(ent)
             start_index_list.append(ent.start)
             end_index_list.append(ent.end)
-    print("Merged", merged)
-
     merged.sort(key=lambda x: x.start)
     final = merged.copy()
     if merged:
@@ -55,6 +50,5 @@ def merger(doc):
                 del final[i:i+2]
                 new_ent = doc.char_span(start, end, merged[i].label)
                 final.append(new_ent)
-    print("final", final)
     doc.ents = final
     return doc
