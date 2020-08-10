@@ -36,7 +36,7 @@ def merger(doc):
     final = merged.copy()
     if merged:
         for i in range(len(merged)):
-            if(i==len(merged)):
+            if(i==len(merged)-1):
                 continue
             start_a = merged[i].start_char
             start_b = merged[i+1].start_char
