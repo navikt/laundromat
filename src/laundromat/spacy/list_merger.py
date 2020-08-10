@@ -2,7 +2,7 @@ from spacy.tokens import Doc
 
 def merger(doc):
     """
-    Assumes that the lists can contain no more than one duplicate of each entity
+    
     """
     list_ner, list_regex = doc.ents, doc._.ents_regex
 
@@ -48,11 +48,13 @@ def merger(doc):
                 end = max(end_a, end_b)
                 del final[i:i+2]
                 new_ent = doc.char_span(start, end, merged[i].label)
+                final.append(new_ent)
             elif start_a<start_b and end_a > end_b:
                 start = min(start_a, start_b)
                 end = max(end_a, end_b)
                 del final[i:i+2]
                 new_ent = doc.char_span(start, end, merged[i].label)
+                final.append(new_ent)
     print("final", final)
     doc.ents = final
     return doc
