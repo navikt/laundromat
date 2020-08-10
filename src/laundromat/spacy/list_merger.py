@@ -34,19 +34,20 @@ def merger(doc):
 
     merged.sort(key=lambda x: x.start)
     final = merged.copy()
-    for i in range(len(merged)):
-        if(i==len(merged)):
-            continue
-        start_a = merged[i].start_char
-        start_b = merged[i+1].start_char
-        end_a = merged[i].end_char
-        end_b = merged[i+1].end_char
+    if merged:
+        for i in range(len(merged)):
+            if(i==len(merged)):
+                continue
+            start_a = merged[i].start_char
+            start_b = merged[i+1].start_char
+            end_a = merged[i].end_char
+            end_b = merged[i+1].end_char
 
-        if start_a == start_b or end_a==end_b:
-            start = min(start_a, start_b)
-            end = max(end_a, end_b)
-            del final[i:i+2]
-            new_ent = doc.char_span(start, end, merged[i].label)
-    print("Sorted merged", merged)
-    doc.ents = merged
+            if start_a == start_b or end_a==end_b:
+                start = min(start_a, start_b)
+                end = max(end_a, end_b)
+                del final[i:i+2]
+                new_ent = doc.char_span(start, end, merged[i].label)
+    print("final", final)
+    doc.ents = final
     return doc
