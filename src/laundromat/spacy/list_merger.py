@@ -31,5 +31,9 @@ def merger(doc):
             start_index_list.append(ent.start)
             end_index_list.append(ent.end)
     print("Merged", merged)
+
+    merged.sort(key=lambda x: x.start)
+
+    print("Sorted merged", merged)
     doc.ents = merged
     return doc
