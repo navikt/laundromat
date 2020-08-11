@@ -14,7 +14,7 @@ setup(
     package_dir={'': 'src'},
     python_requires='>=3.6',
     install_requires=install_requires,
-    author="NAV IKT",
+    author="Marius Dioli @ NAV IKT and Petter Sunde Nymark @ NAV IKT",
     description="NAV sommerstudenter anonymiserings pakke ",
     license="MIT",
     classifiers=[

@@ -1,25 +1,21 @@
-import random
-import warnings
+from datetime import datetime
 from itertools import zip_longest
 from pathlib import Path
 
 import networkx as nx
-import numpy as np
 import pandas as pd
-import plac
 import spacy
 from laundromat.spacy.data_handler import get_data
+from laundromat.spacy.list_merger import merger
 from laundromat.spacy.matcher_list import csv_list_matcher
 from laundromat.spacy.matcher_regex import match_func
-from laundromat.spacy.list_merger import merger
 from sklearn.metrics import f1_score
 from spacy import displacy
 from spacy.gold import GoldParse
 from spacy.matcher import Matcher
 from spacy.scorer import Scorer
-from spacy.util import compounding, minibatch
 from spacy.tokens import Doc
-from datetime import datetime
+from spacy.util import compounding, minibatch
 
 
 class SpacyModel:

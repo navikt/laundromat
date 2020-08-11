@@ -3,7 +3,6 @@ What Is Laundromat?
 ===================
 Laundromat is a python package for scrubbing personal information from text. 
 The current Laundromat is adapted to the Norwegian context, but can easily be modified to fit any language.
-----------------------------------
 
 Laundromat uses a mix of matching techniques like Regular expression
 and a statistical model to recognize and remove personal information in norwegian text. The package is
