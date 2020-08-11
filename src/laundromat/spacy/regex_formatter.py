@@ -8,9 +8,9 @@ from laundromat.regex_engine.date_time import RegexDateTime
 
 def regex_formatter(entities: list = None):
     """
-    Formats desired entities such that they can be fed to SpaCy's entity ruler
+    Formats desired entities such that they can be fed to SpaCy.
 
-    :param entities: a list of strings denoting which entities one wishes to include in the model
+    :param entities: A list of strings denoting which entities one wishes to include in the model.
     """
     labels = all_possible_labels()
 
@@ -26,10 +26,11 @@ def regex_formatter(entities: list = None):
         for label, reg in zip(labels, regex):
             form += [{"label": label, "pattern": [{"TEXT": {"REGEX": reg}}]}]
         return form
-    # TODO Else if they add entities that do not exist yet
+    # TODO Else if they add entities that do not exist yet.
 
 
 def new_entity(label: str, match: str):
+    #TODO Functionality for directly adding classes.
     pass
 
 
@@ -42,7 +43,7 @@ def all_possible_labels():
 
 def regex_engines():
     """
-    Class that calls the different regex classes, and what priority they have. Priority form top to bottom
+    Calls the different regex classes, and adds them in an ordered way.
     """
     regex_function = [
         RegexFnr(),

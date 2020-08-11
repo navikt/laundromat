@@ -19,17 +19,18 @@ from spacy.matcher import Matcher
 from spacy.scorer import Scorer
 from spacy.util import compounding, minibatch
 from spacy.tokens import Doc
+from datetime import datetime
 
 
 class SpacyModel:
-
+    """
+    :SpacyModel class: A class for managing a SpaCy nlp model with methods for the following:
+    - adding custom RegEx 
+    - easy training and display of results
+    - various metrics
+    """
+    
     def __init__(self, model_path=None):
-        """
-        SpacyModel class: A class for managing a SpaCy nlp model with methods for adding custom RegEx and for
-        easy printing
-
-        :param model: an nlp model
-        """
         if not model_path:
             self.model = spacy.load("nb_core_news_lg")
         else:
@@ -39,7 +40,7 @@ class SpacyModel:
 
     def add_patterns(self, entities: list = None, before_ner = False, lookup = False):
         """
-        Adds desired patterns to the entity ruler of the SpaCy model
+        Adds desired patterns to the entity ruler of the SpaCy model.
 
         :param entities: a list of strings denoting which entities the nlp model should detect.
         """
@@ -55,17 +56,16 @@ class SpacyModel:
 
     def predict(self, text: str):
         """
-        Prints the found entities, their labels, start, and end index.
-
         :param text: a string of text which is to be analysed.
+        :return: found entities, their labels, start, and end index.
         """
         doc = self.model(text)
-        ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
+        ents = [[ent.text, ent.label_, ent.start, ent.end] for ent in doc.ents]
         return ents
 
     def doc(self, text: str):
         """
-        A method to return the doc, a SpaCy object containing metadata about the text.
+        Returns the doc, a SpaCy object containing metadata about the text.
 
         :param text: A text string to be ran through the model
         :return: A text in doc-format
@@ -90,31 +90,36 @@ class SpacyModel:
 
     def disable_ner(self):
         """
-        Disables the NER-model in the pipeline
-
+        Disables the NER-model in the pipeline.
         """
         self.disabled = self.model.disable_pipes("ner")
 
     def enable_ner(self):
         """
-        Enables the NER-model in the pipeline
-
+        Enables the NER-model in the pipeline.
         """
         self.disabled.restore()
 
     def pipeline(self):
+        """
+        Prints current NLP pipeline.
+        """
         print(self.model.pipe_names)
 
     def replace(self, text: str, replacement = "entity", replacement_char = "~"):
         """
         Replaces found entities in the given text with the attendant entity labels,
-        e.g. a name is replaced with <PER>.
+        e.g. a name is replaced with <PER>. Shuffle replacement is hard coded to use a list
+        of girl, boy, county, country, and town names.
 
-        returns: the modified text as a string
+        :param text: The text in question as a string.
+        :param replacement: The kind of replacement desired. Default is entity.
+        :param replacement_char: The character used for character and padding replacement. Default is ~.
+        :returns: the modified text as a string
         """
 
         doc = self.model(text)
-        censored_text = text  # Redundant variable?
+        censored_text = text
         ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
 
         if replacement=="entity":
@@ -148,10 +153,7 @@ class SpacyModel:
         return censored_text
 
     def train(self, TRAIN_DATA, labels: list, n_iter: int = 30, output_dir=None):
-
         """
-        Takes the training data and trains the wanted entities. Also saves the model if a output path is given
-
         :param TRAIN_DATA: training data
         :param labels: texts with labels
         :param n_iter: number
@@ -182,7 +184,10 @@ class SpacyModel:
             output_dir = Path(output_dir)
             if not output_dir.exists():
                 output_dir.mkdir()
-            self.model.meta["name"] = 'test_model'  # rename model
+            current_dtm = str(datetime.now)
+            alphanumeric_dtm = [character for character in current_dtm if character.isalnum()]
+            alphanumeric_dtm = "".join(alphanumeric_dtm)
+            self.model.meta["name"] = "ner_model_"+alphanumeric_dtm
             self.model.to_disk(output_dir)
             print("Saved model to", output_dir)
 
@@ -195,6 +200,7 @@ class SpacyModel:
     def f1_scorer(self, TEST_DATA):
         """
         Ignores data of the wrong format. If this is a problem, use print_scores instead.
+        :return: Scores as a dictionary.
         """
         scorer = Scorer()
         df = pd.DataFrame(TEST_DATA)
@@ -206,11 +212,14 @@ class SpacyModel:
             gold = GoldParse(doc, entities=ents["entities"])
             pred = self.model(txt)
             scorer.score(pred, gold)
-        return scorer.scores #, scorer.textcat_score, scorer.textcats_per_cat
+        return scorer.scores
 
     def confusion_matrix(self, TEST_DATA, strict = True):
         """
-        Calculates confusion matrix for given data. Only considers whether a token has been labeled and not if it has been labeled correctly.
+        Calculates confusion matrix for given data. 
+        Only considers whether a token has been labeled and not if it has been labeled correctly.
+
+        :return: Confusion matrix as a dataframe.
         """
         tp, fn, fp, tn = 0, 0, 0, 0
         df = pd.DataFrame(TEST_DATA)
@@ -239,6 +248,14 @@ class SpacyModel:
         return confusion
     
     def print_scores(self, TEST_DATA, strict=True):
+        """
+        Prints the following scores:
+        - Accuracy
+        - Balanced accuracy
+        - Precision
+        - Recall
+        - F1 score
+        """
         cf = self.confusion_matrix(TEST_DATA, strict)
         true_positive = cf["Is Positive"].iloc[0]
         true_negative = cf["Is Negative"].iloc[1]
@@ -255,9 +272,13 @@ class SpacyModel:
         print("Balanced accuracy is: ", balanced_accuracy)
         print("Precision is: ", precision)
         print("Recall is: ", recall)
-        print("F_1 score is: ", f_1)
+        print("F1 score is: ", f_1)
 
     def dependency_graph(self, text: str):
+        """
+        :param text: The text in question as a string.
+        :return: A digraph of the linguistic dependencies in the text. 
+        """
         #TODO Seems to struggle with the  <ENTITY> format as <, >, and . end up as their own nodes.
         doc = self.model(text)
         edges = []
@@ -268,6 +289,11 @@ class SpacyModel:
         return nx.DiGraph(edges)
 
     def top_n_nodes(self, text:str, n=10):
+        """
+        :param text: The text in question as a string.
+        :param n: Number of nodes desired. Default is 10.
+        :return: The top n nodes with highest degree in the dependency graph.
+        """
         graph = self.dependency_graph(text)
         sorted_node_degrees = sorted(list(graph.degree), key= lambda x: x[1], reverse=True)
         if(n>len(sorted_node_degrees)):
@@ -275,6 +301,12 @@ class SpacyModel:
         return sorted_node_degrees[:n]
 
     def similarity(self, text:str, replacement = "entity", replacement_char = "~"):
+        """
+        :param text: The text in question as a string.
+        :param replacement: The kind of replacement desired. Default is entity.
+        :param replacement_char: The character used for character and padding replacement. Default is ~.
+        :return: The cosine similarity between the unaltered text and the altered text.
+        """
         original = self.model(text)
         censored = self.model(self.replace(text, replacement,replacement_char))
         return original.similarity(censored)

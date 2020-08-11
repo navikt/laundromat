@@ -5,7 +5,9 @@ from spacy.tokens import Doc
 
 
 class RegexBase(ABC):
-
+    """
+    Abstract class that RegEx classes inherit from.
+    """
     @property
     @abstractmethod
     def regex_pattern(self):
