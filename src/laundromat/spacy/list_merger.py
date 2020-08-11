@@ -30,7 +30,7 @@ def merger(doc):
     #print("Merged pre sort", merged)
     merged.sort(key=lambda x: x.start)
     final = merged.copy()
-    #print("Merged post-sort", merged)
+    print("Merged post-sort", merged)
     if merged:
         for i in range(len(merged)):
             if(i==len(merged)-1):
@@ -52,6 +52,6 @@ def merger(doc):
                 del final[i:i+2]
                 new_ent = doc.char_span(start, end, merged[i].label)
                 final.append(new_ent)
-    #print("final", final)
+    print("final", final)
     doc.ents = final
     return doc

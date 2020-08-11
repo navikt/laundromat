@@ -61,28 +61,29 @@ class SpacyModel:
         """
         doc = self.model(text)
         ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
-        print(ents)
+        return ents
 
     def doc(self, text: str):
         """
-        A method to return the doc, thus all its meta info.
+        A method to return the doc, a SpaCy object containing metadata about the text.
 
         :param text: A text string to be ran through the model
         :return: A text in doc-format
         """
         return self.model(text)
 
-    def display_predictions(self, text: str):
-        colors = {"PER": "#fa7a7a",
-                  "FNR": "#fac77a",
-                  "DTM": "#faf87a",
-                  "TLF": "#8dfa7a",
-                  "AMOUNT": "#7afadc",
-                  "LOC": "#7a91fa",
-                  "CREDIT_CARD": "#e97afa",
+    def display(self, text: str):
+        colors = {"PER": "#FFA3A3",
+                  "FNR": "#FDB9A2",
+                  "DTM": "#FBCEA0",
+                  "TLF": "#D8DEAD",
+                  "AMOUNT": "#B5EEB9",
+                  "LOC": "#ADDFEE",
+                  "CREDIT_CARD": "#C0C7EC",
+                  "ORG": "D2AFEA"
                   }
 
-        options = {"ents": ["LOC", "PER", "FNR", "AMOUNT", "MEDICAL_CONDITIONS", "TLF", "DTM", "CREDIT_CARD"],
+        options = {"ents": ["ORG", "LOC", "PER", "FNR", "AMOUNT", "TLF", "DTM", "CREDIT_CARD"],
                    "colors": colors
                    }
         displacy.render(self.doc(text), style='ent', jupyter=True, options=options)
