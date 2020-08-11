@@ -46,7 +46,7 @@ def merger(doc):
                 del final[i:i+2]
                 new_ent = doc.char_span(start, end, merged[i].label)
                 final.append(new_ent)
-            elif start_a<start_b and end_a > end_b:
+            elif end_a > start_b:
                 start = min(start_a, start_b)
                 end = max(end_a, end_b)
                 del final[i:i+2]
