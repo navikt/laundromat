@@ -5,13 +5,11 @@ from setuptools import setup, find_packages
 with open('requirements.txt') as f:
     install_requires = f.read().strip().split('\n')
 
-with open('VERSION') as f:
-    version = f.read()
 
 
 setup(
     name='laundromat',
-    version=version,
+    version='1.0.0',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     python_requires='>=3.6',
