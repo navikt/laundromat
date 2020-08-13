@@ -28,7 +28,7 @@ Current F1 scores with a model tuned on 500 hand labled texts:
 -------------------
 
 
-+------------------+-------+
++--------+---------+-------+
 | Entities         | Score |
 +------------------+-------+
 | Overall          |   87  |
