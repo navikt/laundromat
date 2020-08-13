@@ -1,7 +1,8 @@
 from datetime import datetime
 from itertools import zip_longest
 from pathlib import Path
-
+import warnings
+import random
 import networkx as nx
 import pandas as pd
 import spacy
@@ -269,6 +270,20 @@ class SpacyModel:
         print("Precision is: ", precision)
         print("Recall is: ", recall)
         print("F1 score is: ", f_1)
+    
+    def count(self, text:str):
+        ent_counts = {"PER": 0,
+                  "FNR": 0,
+                  "DTM": 0,
+                  "TLF": 0,
+                  "AMOUNT": 0,
+                  "LOC": 0,
+                  "CREDIT_CARD": 0,
+                  "ORG": 0
+                  }
+        for ent in self.model(text).ents:
+            ent_counts[ent.label_] = ent_counts[ent.label_] + 1
+        return ent_counts
 
     def dependency_graph(self, text: str):
         """

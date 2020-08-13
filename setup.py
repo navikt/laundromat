@@ -15,10 +15,11 @@ setup(
     python_requires='>=3.6',
     install_requires=install_requires,
     author="Marius Dioli @ NAV IKT and Petter Sunde Nymark @ NAV IKT",
-    description="NAV sommerstudenter anonymiserings pakke ",
+    description="Scrub personal information from text with Laundromat.",
+    project_description="",
     license="MIT",
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7'
