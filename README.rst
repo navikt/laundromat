@@ -4,8 +4,8 @@ What Is Laundromat?
 Laundromat is a python package for scrubbing personal information from text. 
 The current Laundromat is adapted to the Norwegian context, but can easily be modified to fit any language.
 
-Laundromat uses a mix of matching techniques like Regular expression
-and a statistical model to recognize and remove personal information in norwegian text. The package is
+Laundromat uses regular expressions coupled with a machine learning model to 
+recognize and remove personal information in norwegian text. The package is
 built around SpaCy. Current functionality of the package includes:
 
 * Detecting named entities related to personal and sensitive information.
@@ -24,25 +24,52 @@ Supported entities:
 * <CREDIT_CARD> - Credit card number
 
 
-Current Performance of an untrained 
+Current F1 scores with a model tuned on 500 hand labled texts:
 -------------------
 
 
-+-------+----------+-------+
-| Enteties         | Score |
 +------------------+-------+
-| PER              |   0   |
+| Entities         | Score |
 +------------------+-------+
-| TLF              |   0   |
+| Overall          |   87  |
 +------------------+-------+
-| DTM              |   0   |
+| PER              |   92  |
 +------------------+-------+
-| AMOUNT           |   0   |
+| TLF              |   71  |
 +------------------+-------+
-| LOC              |   0   |
+| DTM              |   86  |
 +------------------+-------+
-| CREDIT_CARD      |   0   |
+| AMOUNT           |   83  |
 +------------------+-------+
+| LOC              |   89  |
++------------------+-------+
+| ORG              |   67  |
++------------------+-------+
+
+
+Current F1 scores using an untrained SpaCy model:
+-------------------
+
+
++------------------+-------+
+| Entities         | Score |
++------------------+-------+
+| Overall          |   40  |
++------------------+-------+
+| PER              |   63  |
++------------------+-------+
+| TLF              |   51  |
++------------------+-------+
+| DTM              |   38  |
++------------------+-------+
+| AMOUNT           |   06  |
++------------------+-------+
+| LOC              |   58  |
++------------------+-------+
+| ORG              |   09  |
++------------------+-------+
+
+
 
 
 Requirements
