@@ -282,7 +282,10 @@ class SpacyModel:
                   "ORG": 0
                   }
         for ent in self.model(text).ents:
-            ent_counts[ent.label_] = ent_counts[ent.label_] + 1
+            try:
+                ent_counts[ent.label_] = ent_counts[ent.label_] + 1
+            except KeyError:
+                ent_counts[ent.label_] = 1
         return ent_counts
 
     def dependency_graph(self, text: str):
