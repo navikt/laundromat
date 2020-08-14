@@ -281,7 +281,11 @@ class SpacyModel:
                   "CREDIT_CARD": 0,
                   "ORG": 0
                   }
-        for ent in self.model(text).ents:
+        try:
+            tx = str(text)
+        except TypeError:
+            return ent_counts
+        for ent in self.model(tx).ents:
             try:
                 ent_counts[ent.label_] = ent_counts[ent.label_] + 1
             except KeyError:
