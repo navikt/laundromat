@@ -21,14 +21,14 @@ class RegexMatcher:
         self.regexes.append(regex)
 
 
-    def match_func(doc):
+    def match_func(self, doc):
         """
         Uses regex to find patterns and label them with the given label.
 
         :param doc: The text in doc-format
         :return: The text in doc-format with added entities
         """
-        entity_list = regexes
+        entity_list = self.regexes
         spans = []
 
         for entity in entity_list:
@@ -36,13 +36,13 @@ class RegexMatcher:
                 start, end = match.span()
                 span = doc.char_span(start, end, label=entity.label)
                 if type(span) is not type(None):
-                    if not overlap(span, doc):
+                    if not self.overlap(span, doc):
                         spans.append(span)
 
         doc._.ents_regex = spans
         return doc
 
-    def overlap(span, doc):
+    def overlap(self, span, doc):
         """
         :param span: Span of words
         :param doc: The text in doc-format
