@@ -1,39 +1,46 @@
 import pandas as pd
 import os
 from spacy.pipeline import EntityRuler
-from laundromat.spacy.data_handler import get_data
 
-def csv_list_matcher(nlp):
-    """
-    Reads csv-files for names and surnames and uses EntityRuler to match to a entity and return to be added to
-    the model pipeline
+class ListMatcher:
 
-    :param nlp: The Spacy model
-    :return: The ruler containing the new pattern rules to be included in the pipeline
-    """
-    names_list = []
-    loc_list = []
-    name_path_list = ['etternavn_ssb.csv',
-                      'guttefornavn_ssb.csv',
-                      'jentefornavn_ssb.csv']
-    country_path_list = ['land.csv',
-                         'kommuner.csv',
-                         'tettsteder.csv']
+    def __init__(self):
+        self.default_list = [('land.csv', "LOC"),
+                            ('etternavn_ssb.csv', "PER"),
+                            ('guttefornavn_ssb.csv', "PER"),
+                            ('jentefornavn_ssb.csv', "PER")]
 
-    ruler = EntityRuler(nlp)
+    def csv_list_matcher(self, nlp, path_list = None):
+        """
+        Reads csv-files for names and surnames and uses EntityRuler to match to a entity and return to be added to
+        the model pipeline
 
-    # Names
-    for file_path in name_path_list:
-        name_df = get_data(file_path)
-        names_list.extend(name_df.iloc[:, 0].to_list())
-    name_patterns = [{"label": "PER", "pattern": [{"lower": name.lower()}]} for name in names_list]
-    ruler.add_patterns(name_patterns)
+        :param nlp: The Spacy model
+        :param path_list: a list of tuples with the path of the list and its attendant entity.
+        Accepts only single entity type lists. Lists must be a single column with the string "text" in the first cell.
+        :return: The ruler containing the new pattern rules to be included in the pipeline
+        """
+        if path_list is None:
+            path_list = self.default_list
+        ruler = EntityRuler(nlp)
+        print(path_list)
+        for path, label in path_list:
+            df = self.get_data(path)
+            name_patterns = [{"label": label, "pattern": [{"lower": name.lower()}]} for name in df["text"]]
+            ruler.add_patterns(name_patterns)
+        return ruler
 
-    # Countries
-    for file_path in country_path_list:
-        loc_df = get_data(file_path)
-        loc_list.extend(loc_df['name'].to_list())
-    name_patterns = [{"label": "LOC", "pattern": [{"lower": country.lower()}]} for country in loc_list]
-    ruler.add_patterns(name_patterns)
+    def get_data(self, file_name:str):
+        """
+        Takes the file path of the integrated data and returns the csv-file as a dataframe
+        :param file_name:
+        :return dataframe:
+        """
+        location = os.path.dirname(os.path.realpath(__file__))
+        my_file = os.path.join(location, 'data', file_name)
+        dataframe = pd.read_csv(my_file, sep=';', encoding = 'utf-8')
 
-    return ruler
+        return dataframe
+    
+    def default_list_append(self, item):
+        self.default_list.append(item)

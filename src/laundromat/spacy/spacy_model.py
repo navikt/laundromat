@@ -6,10 +6,11 @@ import random
 import networkx as nx
 import pandas as pd
 import spacy
-from laundromat.spacy.data_handler import get_data
 from laundromat.spacy.list_merger import merger
-from laundromat.spacy.matcher_list import csv_list_matcher
-from laundromat.spacy.matcher_regex import match_func
+from laundromat.spacy.matcher_list import ListMatcher
+from laundromat.spacy.matcher_regex import RegexMatcher
+import laundromat.spacy.matcher_regex as mreg
+from laundromat.regex_engine.generic import RegexGeneric
 from sklearn.metrics import f1_score
 from spacy import displacy
 from spacy.gold import GoldParse
@@ -32,8 +33,12 @@ class SpacyModel:
             self.model = spacy.load("nb_core_news_lg")
         else:
             self.model = spacy.load(model_path)
+            self.model_path = model_path
         self.matcher = Matcher(self.model.vocab)
         Doc.set_extension('ents_regex', force=True, default=True)
+        self.patterns_added = False
+        self.list_matcher = ListMatcher()
+        self.regex_matcher = RegexMatcher()
 
     def add_patterns(self, entities: list = None, before_ner = False, lookup = False):
         """
@@ -41,15 +46,32 @@ class SpacyModel:
 
         :param entities: a list of strings denoting which entities the nlp model should detect.
         """
-        ruler = csv_list_matcher(self.model)
+        if self.patterns_added:
+            self.model = spacy.load(self.model_path)
+            self.patterns_added = False
+        ruler = self.list_matcher.csv_list_matcher(nlp=self.model)
         if before_ner:
-            self.model.add_pipe(match_func, name="regex_matcher", before='ner')
+            self.model.add_pipe(self.regex_matcher.match_func, name="regex_matcher", before='ner')
         else:
-            self.model.add_pipe(match_func, name="regex_matcher", after='ner')
+            self.model.add_pipe(self.regex_matcher.match_func, name="regex_matcher", after='ner')
         if lookup:
             self.model.add_pipe(ruler, after="ner")
         self.model.add_pipe(merger, last = True)
         
+    def new_regex(self, pattern: str, context: str, label: str):
+        self.regex_matcher.append_regexes(RegexGeneric(pattern, context, label))
+
+    def print_regex_labels(self):
+        "Prints regex labels"
+        for regex in self.regex_matcher.regexes:
+            print(regex.label)
+
+
+    def add_list(self, new_list):
+        """
+        :param new_list: new lists must be a tuple of a path and a tag.
+        """
+        self.list_matcher.default_list_append(new_list)
 
     def predict(self, text: str):
         """
@@ -129,15 +151,15 @@ class SpacyModel:
             for ent in ents:
                 censored_text = censored_text.replace(ent[0], replacement_char*len(ent[0]))
         elif replacement=="shuffle":
-            girls_names = get_data('jentefornavn_ssb.csv')['fornavn']
-            boys_names = get_data('guttefornavn_ssb.csv')['fornavn']
+            girls_names = self.list_matcher.get_data('jentefornavn_ssb.csv')['text']
+            boys_names = self.list_matcher.get_data('guttefornavn_ssb.csv')['text']
             name_list = girls_names.append(boys_names, ignore_index=True)
 
-            kom_names = get_data('kommuner.csv')['name']
-            counrties_names = get_data('land.csv')['name']
-            villages_names = get_data('tettsteder.csv')['name']
-            loc_list = kom_names.append(counrties_names.append(villages_names, ignore_index=True), ignore_index=True)
-
+            #kom_names = self.list_matcher.get_data('kommuner.csv')['text']
+            country_names = self.list_matcher.get_data('land.csv')['text']
+            #villages_names = self.list_matcher.get_data('tettsteder.csv')['text']
+            #loc_list = kom_names.append(country_names.append(villages_names, ignore_index=True), ignore_index=True)
+            loc_list = country_names
             for ent in ents:
                 if ent[1] == 'PER':
                     censored_text = censored_text.replace(ent[0], name_list[np.random.randint(0, len(name_list))])
