@@ -66,7 +66,6 @@ class SpacyModel:
         for regex in self.regex_matcher.regexes:
             print(regex.label)
 
-
     def add_list(self, new_list):
         """
         :param new_list: new lists must be a tuple of a path and a tag.
@@ -81,6 +80,13 @@ class SpacyModel:
         doc = self.model(text)
         ents = [[ent.text, ent.label_, ent.start, ent.end] for ent in doc.ents]
         return ents
+        
+    def predict_list(self, text_list):
+        docs = list(self.model.pipe(text_list))
+        ents = []
+        for d in docs:
+            ents.append([[ent.text, ent.label_, ent.start, ent.end] for ent in d.ents])
+        return ents
 
     def doc(self, text: str):
         """
@@ -90,6 +96,9 @@ class SpacyModel:
         :return: A text in doc-format
         """
         return self.model(text)
+
+    def doc_list(self, text_list):
+        return list(self.model.pipe(text_list))
 
     def display(self, text: str):
         colors = {"PER": "#FFA3A3",
