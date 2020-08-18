@@ -23,10 +23,9 @@ class ListMatcher:
         if path_list is None:
             path_list = self.default_list
         ruler = EntityRuler(nlp)
-        print(path_list)
         for path, label in path_list:
             df = self.get_data(path)
-            name_patterns = [{"label": label, "pattern": [{"lower": name.lower()}]} for name in df["text"]]
+            name_patterns = [{"label": label, "pattern": [{"lower": name.lower()}]} for name in df.iloc[:, 0]]
             ruler.add_patterns(name_patterns)
         return ruler
 

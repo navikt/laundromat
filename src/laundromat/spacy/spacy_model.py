@@ -72,6 +72,10 @@ class SpacyModel:
         """
         self.list_matcher.default_list_append(new_list)
 
+    def print_matcher_lists(self):
+        for ls, tag in self.list_matcher.default_list:
+            print("Path: ", ls, "Entity tag: ", tag)
+
     def predict(self, text: str):
         """
         :param text: a string of text which is to be analysed.
@@ -80,7 +84,7 @@ class SpacyModel:
         doc = self.model(text)
         ents = [[ent.text, ent.label_, ent.start, ent.end] for ent in doc.ents]
         return ents
-        
+
     def predict_list(self, text_list):
         docs = list(self.model.pipe(text_list))
         ents = []
