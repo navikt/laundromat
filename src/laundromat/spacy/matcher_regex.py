@@ -8,13 +8,18 @@ from laundromat.regex_engine.date_time import RegexDateTime
 from laundromat.regex_engine.generic import RegexGeneric
 
 class RegexMatcher:
-    def __init__(self):
-        self.regexes = [RegexFnr(),
+    def __init__(self, regex_list = []):
+        default_regexes = [RegexFnr(),
                         RegexCreditCard(),
                         RegexTlfNr(),
                         RegexDateTime(),
                         RegexAmount()
                         ]
+        self.regexes = []
+        for re in default_regexes:
+            if re.label in regex_list:
+                self.regexes.append(re)
+        
     
 
     def append_regexes(self, regex):

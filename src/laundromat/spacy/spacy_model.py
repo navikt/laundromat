@@ -38,14 +38,16 @@ class SpacyModel:
         Doc.set_extension('ents_regex', force=True, default=True)
         self.patterns_added = False
         self.list_matcher = ListMatcher()
-        self.regex_matcher = RegexMatcher()
 
-    def add_patterns(self, entities: list = None, before_ner = False, lookup = False):
+    def add_patterns(self, entities: list = ['FNR', 'DTM', 'TLF', 
+    'AMOUNT', 'CREDIT_CARD'], before_ner = False, lookup = False):
         """
         Adds desired patterns to the entity ruler of the SpaCy model.
 
         :param entities: a list of strings denoting which entities the nlp model should detect.
         """
+
+        self.regex_matcher = RegexMatcher(entities)
         if self.patterns_added:
             self.model = spacy.load(self.model_path)
             self.patterns_added = False
@@ -63,8 +65,11 @@ class SpacyModel:
 
     def print_regex_labels(self):
         "Prints regex labels"
-        for regex in self.regex_matcher.regexes:
-            print(regex.label)
+        try:
+            for regex in self.regex_matcher.regexes:
+                print(regex.label)
+        except AttributeError:
+            print([])
 
     def add_list(self, new_list):
         """
