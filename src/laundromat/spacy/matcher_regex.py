@@ -33,10 +33,9 @@ class RegexMatcher:
         :param doc: The text in doc-format
         :return: The text in doc-format with added entities
         """
-        entity_list = self.regexes
         spans = []
 
-        for entity in entity_list:
+        for entity in self.regexes:
             for match in re.finditer(entity.regex_pattern, doc.text):
                 start, end = match.span()
                 span = doc.char_span(start, end, label=entity.label)

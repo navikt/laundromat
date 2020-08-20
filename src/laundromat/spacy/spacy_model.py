@@ -312,15 +312,13 @@ class SpacyModel:
         print("F1 score is: ", f_1)
     
     def count(self, text:str):
-        ent_counts = {"PER": 0,
-                  "FNR": 0,
-                  "DTM": 0,
-                  "TLF": 0,
-                  "AMOUNT": 0,
-                  "LOC": 0,
-                  "CREDIT_CARD": 0,
-                  "ORG": 0
-                  }
+        try:
+            ents = [("PER", 0), ("ORG", 0), ("LOC", 0)]
+            ents += [(x.label,0) for x in self.regex_matcher.regexes]
+            ents = list(set(ents))
+        except AttributeError:
+            ents = [("PER", 0), ("ORG", 0), ("LOC", 0)]
+        ent_counts = dict(ents)
         try:
             tx = str(text)
         except TypeError:
