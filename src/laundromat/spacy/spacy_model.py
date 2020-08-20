@@ -1,17 +1,16 @@
+import random
+import warnings
 from datetime import datetime
 from itertools import zip_longest
 from pathlib import Path
-import warnings
-import random
+
 import networkx as nx
 import pandas as pd
 import spacy
+from laundromat.regex_engine.generic import RegexGeneric
 from laundromat.spacy.list_merger import merger
 from laundromat.spacy.matcher_list import ListMatcher
 from laundromat.spacy.matcher_regex import RegexMatcher
-import laundromat.spacy.matcher_regex as mreg
-from laundromat.regex_engine.generic import RegexGeneric
-from sklearn.metrics import f1_score
 from spacy import displacy
 from spacy.gold import GoldParse
 from spacy.matcher import Matcher
