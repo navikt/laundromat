@@ -20,7 +20,7 @@ def merger(doc):
             correct_regex.append(ent)
             start_index_list.append(ent.start_char)
             end_index_list.append(ent.end_char)
-    
+    print("correct_regex: ", correct_regex)
     #Merges the two lists
     merged = list(list_ner)
     start_index_list = [ent.start for ent in list_ner]
@@ -33,7 +33,7 @@ def merger(doc):
             start_index_list.append(ent.start)
             end_index_list.append(ent.end)
     merged.sort(key=lambda x: x.start)
-
+    print("merged: ", merged)
     #Resolves overlaps
     final = merged.copy()
     if merged:
