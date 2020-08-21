@@ -7,6 +7,8 @@ def merger(doc):
     """
     list_ner, list_regex = doc.ents, doc._.ents_regex
 
+    print("list_ner: ", list_ner)
+    print("list_regex: ", list_regex)
     #Removes duplicates from regex
     correct_regex = []
     start_index_list = []

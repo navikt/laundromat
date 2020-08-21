@@ -42,7 +42,7 @@ class RegexMatcher:
                 if type(span) is not type(None):
                     if not self.overlap(span, doc):
                         spans.append(span)
-
+        
         doc._.ents_regex = spans
         return doc
 
