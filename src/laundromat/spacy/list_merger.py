@@ -7,8 +7,6 @@ def merger(doc):
     """
     list_ner, list_regex = doc.ents, doc._.ents_regex
 
-    print("list_ner: ", list_ner)
-    print("list_regex: ", list_regex)
     #Removes duplicates from regex
     correct_regex = []
     start_index_list = []
@@ -20,7 +18,7 @@ def merger(doc):
             correct_regex.append(ent)
             start_index_list.append(ent.start_char)
             end_index_list.append(ent.end_char)
-    print("correct_regex: ", correct_regex)
+
     #Merges the two lists
     merged = list(list_ner)
     start_index_list = [ent.start for ent in list_ner]
@@ -33,7 +31,7 @@ def merger(doc):
             start_index_list.append(ent.start)
             end_index_list.append(ent.end)
     merged.sort(key=lambda x: x.start)
-    print("merged: ", merged)
+
     #Resolves overlaps
     final = []
     deletion_index = []
@@ -58,11 +56,12 @@ def merger(doc):
                 deletion_index += [i, i+1]
                 new_ent = doc.char_span(start, end, merged[i].label)
                 final.append(new_ent)
-    print("Deletion_index")
-    print("final:", final)
+
+    #Deletes overlaping entities
     for index in sorted(list(set(deletion_index)), reverse=True):
         del merged[index]
+    #Adds new combined entities
     final += merged
-    print("Final final", final)
+    
     doc.ents = final
     return doc
