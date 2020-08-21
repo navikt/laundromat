@@ -35,7 +35,8 @@ def merger(doc):
     merged.sort(key=lambda x: x.start)
     print("merged: ", merged)
     #Resolves overlaps
-    final = merged.copy()
+    final = []
+    deletion_index = []
     if merged:
         for i in range(len(merged)):
             if(i==len(merged)-1):
@@ -48,16 +49,20 @@ def merger(doc):
             if start_a == start_b or end_a==end_b:
                 start = min(start_a, start_b)
                 end = max(end_a, end_b)
-                del final[i:i+2]
+                deletion_index += [i, i+1]
                 new_ent = doc.char_span(start, end, merged[i].label)
                 final.append(new_ent)
             elif end_a > start_b:
                 start = min(start_a, start_b)
                 end = max(end_a, end_b)
-                del final[i:i+2]
+                deletion_index += [i, i+1]
                 new_ent = doc.char_span(start, end, merged[i].label)
                 final.append(new_ent)
-
+    print("Deletion_index")
     print("final:", final)
+    for index in sorted(list(set(deletion_index)), reverse=True):
+        del merged[index]
+    final += merged
+    print("Final final", final)
     doc.ents = final
     return doc
