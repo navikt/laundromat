@@ -58,5 +58,6 @@ def merger(doc):
                 new_ent = doc.char_span(start, end, merged[i].label)
                 final.append(new_ent)
 
+    print("final:", final)
     doc.ents = final
     return doc
