@@ -9,7 +9,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='laundromat',
-    version='1.1.1',
+    version='1.1.4',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     python_requires='>=3.6',
