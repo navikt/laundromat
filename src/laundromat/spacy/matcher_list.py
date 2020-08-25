@@ -2,15 +2,16 @@ import pandas as pd
 import os
 from spacy.pipeline import EntityRuler
 
+
 class ListMatcher:
 
     def __init__(self):
         self.default_list = [('land.csv', "LOC"),
-                            ('etternavn_ssb.csv', "PER"),
-                            ('guttefornavn_ssb.csv', "PER"),
-                            ('jentefornavn_ssb.csv', "PER")]
+                             ('etternavn_ssb.csv', "PER"),
+                             ('guttefornavn_ssb.csv', "PER"),
+                             ('jentefornavn_ssb.csv', "PER")]
 
-    def csv_list_matcher(self, nlp, path_list = None):
+    def csv_list_matcher(self, nlp, path_list=None):
         """
         Reads csv-files for names and surnames and uses EntityRuler to match to a entity and return to be added to
         the model pipeline
@@ -25,11 +26,12 @@ class ListMatcher:
         ruler = EntityRuler(nlp)
         for path, label in path_list:
             df = self.get_data(path)
-            name_patterns = [{"label": label, "pattern": [{"lower": name.lower()}]} for name in df.iloc[:, 0]]
+            name_patterns = [{"label": label, "pattern": [
+                {"lower": name.lower()}]} for name in df.iloc[:, 0]]
             ruler.add_patterns(name_patterns)
         return ruler
 
-    def get_data(self, file_name:str):
+    def get_data(self, file_name: str):
         """
         Takes the file path of the integrated data and returns the csv-file as a dataframe
         :param file_name:
@@ -37,9 +39,9 @@ class ListMatcher:
         """
         location = os.path.dirname(os.path.realpath(__file__))
         my_file = os.path.join(location, 'data', file_name)
-        dataframe = pd.read_csv(my_file, sep=';', encoding = 'utf-8')
+        dataframe = pd.read_csv(my_file, sep=';', encoding='utf-8')
 
         return dataframe
-    
+
     def default_list_append(self, item):
         self.default_list.append(item)

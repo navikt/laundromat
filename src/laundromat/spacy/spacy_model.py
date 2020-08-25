@@ -26,7 +26,7 @@ class SpacyModel:
     - easy training and display of results
     - various metrics
     """
-    
+
     def __init__(self, model_path=None):
         if not model_path:
             self.model = spacy.load("nb_core_news_lg")
@@ -38,8 +38,8 @@ class SpacyModel:
         self.patterns_added = False
         self.list_matcher = ListMatcher()
 
-    def add_patterns(self, entities: list = ['FNR', 'DTM', 'TLF', 
-    'AMOUNT', 'CREDIT_CARD'], before_ner = False, lookup = False):
+    def add_patterns(self, entities: list = ['FNR', 'DTM', 'TLF',
+                                             'AMOUNT', 'CREDIT_CARD'], before_ner=False, lookup=False):
         """
         Adds desired patterns to the entity ruler of the SpaCy model.
 
@@ -52,15 +52,18 @@ class SpacyModel:
             self.patterns_added = False
         ruler = self.list_matcher.csv_list_matcher(nlp=self.model)
         if before_ner:
-            self.model.add_pipe(self.regex_matcher.match_func, name="regex_matcher", before='ner')
+            self.model.add_pipe(self.regex_matcher.match_func,
+                                name="regex_matcher", before='ner')
         else:
-            self.model.add_pipe(self.regex_matcher.match_func, name="regex_matcher", after='ner')
+            self.model.add_pipe(self.regex_matcher.match_func,
+                                name="regex_matcher", after='ner')
         if lookup:
             self.model.add_pipe(ruler, after="ner")
-        self.model.add_pipe(merger, last = True)
-        
+        self.model.add_pipe(merger, last=True)
+
     def new_regex(self, pattern: str, context: str, label: str):
-        self.regex_matcher.append_regexes(RegexGeneric(pattern, context, label))
+        self.regex_matcher.append_regexes(
+            RegexGeneric(pattern, context, label))
 
     def print_regex_labels(self):
         "Prints regex labels"
@@ -93,7 +96,8 @@ class SpacyModel:
         docs = list(self.model.pipe(text_list))
         ents = []
         for d in docs:
-            ents.append([[ent.text, ent.label_, ent.start, ent.end] for ent in d.ents])
+            ents.append([[ent.text, ent.label_, ent.start, ent.end]
+                         for ent in d.ents])
         return ents
 
     def doc(self, text: str):
@@ -122,7 +126,8 @@ class SpacyModel:
         options = {"ents": ["ORG", "LOC", "PER", "FNR", "AMOUNT", "TLF", "DTM", "CREDIT_CARD"],
                    "colors": colors
                    }
-        displacy.render(self.doc(text), style='ent', jupyter=True, options=options)
+        displacy.render(self.doc(text), style='ent',
+                        jupyter=True, options=options)
 
     def disable_ner(self):
         """
@@ -142,7 +147,7 @@ class SpacyModel:
         """
         print(self.model.pipe_names)
 
-    def replace(self, text: str, replacement = "entity", replacement_char = "~"):
+    def replace(self, text: str, replacement="entity", replacement_char="~"):
         """
         Replaces found entities in the given text with the attendant entity labels,
         e.g. a name is replaced with <PER>. Shuffle replacement is hard coded to use a list
@@ -156,20 +161,25 @@ class SpacyModel:
 
         doc = self.model(text)
         censored_text = text
-        ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"] for ent in doc.ents]
+        ents = [[ent.text, ent.label_, ent.start, ent.end, "NA"]
+                for ent in doc.ents]
 
-        if replacement=="entity":
+        if replacement == "entity":
             for ent in ents:
-                censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
-        elif replacement=="character":
+                censored_text = censored_text.replace(
+                    ent[0], "<" + ent[1] + ">")
+        elif replacement == "character":
             for ent in ents:
                 censored_text = censored_text.replace(ent[0], replacement_char)
-        elif replacement=="pad":
+        elif replacement == "pad":
             for ent in ents:
-                censored_text = censored_text.replace(ent[0], replacement_char*len(ent[0]))
-        elif replacement=="shuffle":
-            girls_names = self.list_matcher.get_data('jentefornavn_ssb.csv')['text']
-            boys_names = self.list_matcher.get_data('guttefornavn_ssb.csv')['text']
+                censored_text = censored_text.replace(
+                    ent[0], replacement_char*len(ent[0]))
+        elif replacement == "shuffle":
+            girls_names = self.list_matcher.get_data(
+                'jentefornavn_ssb.csv')['text']
+            boys_names = self.list_matcher.get_data(
+                'guttefornavn_ssb.csv')['text']
             name_list = girls_names.append(boys_names, ignore_index=True)
 
             #kom_names = self.list_matcher.get_data('kommuner.csv')['text']
@@ -179,13 +189,17 @@ class SpacyModel:
             loc_list = country_names
             for ent in ents:
                 if ent[1] == 'PER':
-                    censored_text = censored_text.replace(ent[0], name_list[np.random.randint(0, len(name_list))])
+                    censored_text = censored_text.replace(
+                        ent[0], name_list[np.random.randint(0, len(name_list))])
                 if ent[1] == 'LOC':
-                    censored_text = censored_text.replace(ent[0], loc_list[np.random.randint(0, len(loc_list))])
+                    censored_text = censored_text.replace(
+                        ent[0], loc_list[np.random.randint(0, len(loc_list))])
                 else:
-                    censored_text = censored_text.replace(ent[0], "<" + ent[1] + ">")
+                    censored_text = censored_text.replace(
+                        ent[0], "<" + ent[1] + ">")
         else:
-            raise ValueError("replacement must be either entity, character, pad, or shuffle")
+            raise ValueError(
+                "replacement must be either entity, character, pad, or shuffle")
         return censored_text
 
     def train(self, TRAIN_DATA, labels: list, n_iter: int = 30, output_dir=None):
@@ -202,9 +216,11 @@ class SpacyModel:
         optimizer = self.model.resume_training()
         move_names = list(ner.move_names)
         pipe_exceptions = ["ner", "trf_wordpiecer", "trf_tok2vec"]
-        other_pipes = [pipe for pipe in self.model.pipe_names if pipe not in pipe_exceptions]
+        other_pipes = [
+            pipe for pipe in self.model.pipe_names if pipe not in pipe_exceptions]
         with (self.model.disable_pipes(*other_pipes)), warnings.catch_warnings():
-            warnings.filterwarnings("once", category=UserWarning, module='spacy')
+            warnings.filterwarnings(
+                "once", category=UserWarning, module='spacy')
             sizes = compounding(1.0, 4.0, 1.001)
             # batch up the examples using spaCy's minibatch
             for itn in range(n_iter):
@@ -213,7 +229,8 @@ class SpacyModel:
                 losses = {}
                 for batch in batches:
                     texts, annotations = zip(*batch)
-                    self.model.update(texts, annotations, sgd=optimizer, drop=0.35, losses=losses)
+                    self.model.update(texts, annotations,
+                                      sgd=optimizer, drop=0.35, losses=losses)
                 print("Losses", losses)
         # Save model
         if output_dir is not None:
@@ -221,7 +238,8 @@ class SpacyModel:
             if not output_dir.exists():
                 output_dir.mkdir()
             current_dtm = str(datetime.now)
-            alphanumeric_dtm = [character for character in current_dtm if character.isalnum()]
+            alphanumeric_dtm = [
+                character for character in current_dtm if character.isalnum()]
             alphanumeric_dtm = "".join(alphanumeric_dtm)
             self.model.meta["name"] = "ner_model_"+alphanumeric_dtm
             self.model.to_disk(output_dir)
@@ -250,7 +268,7 @@ class SpacyModel:
             scorer.score(pred, gold)
         return scorer.scores
 
-    def confusion_matrix(self, TEST_DATA, strict = True):
+    def confusion_matrix(self, TEST_DATA, strict=True):
         """
         Calculates confusion matrix for given data. 
         Only considers whether a token has been labeled and not if it has been labeled correctly.
@@ -260,7 +278,8 @@ class SpacyModel:
         tp, fn, fp, tn = 0, 0, 0, 0
         df = pd.DataFrame(TEST_DATA)
         df.columns = ["Text", "True_entities"]
-        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
+        df["Model_entities"] = df["Text"].apply(lambda x: {"entities": [(
+            ent.start_char, ent.end_char, ent.label_) for ent in self.model(x).ents]})
         df["total"] = df["Text"].apply(lambda x: len(self.model(x)))
         for model, truth in zip_longest(df["Model_entities"], df["True_entities"]):
             ents_m = model["entities"]
@@ -273,16 +292,17 @@ class SpacyModel:
                             tp += 1
                             overlap += 1
                     else:
-                        if (t[0] <= m[0] <=t[1]) or (t[0] <= m[1] <= t[1]):
+                        if (t[0] <= m[0] <= t[1]) or (t[0] <= m[1] <= t[1]):
                             tp += 1
                             overlap += 1
             fp += len(ents_m) - overlap
             fn += len(ents_t) - overlap
-            tn = tn -(len(ents_m)-overlap) -len(ents_t)
+            tn = tn - (len(ents_m)-overlap) - len(ents_t)
         tn += df["total"].sum()
-        confusion = pd.DataFrame([[tp, fp], [fn, tn]], index = ["Predicted Positive", "Predicted Negative"], columns=["Is Positive", "Is Negative"])
+        confusion = pd.DataFrame([[tp, fp], [fn, tn]], index=[
+                                 "Predicted Positive", "Predicted Negative"], columns=["Is Positive", "Is Negative"])
         return confusion
-    
+
     def print_scores(self, TEST_DATA, strict=True):
         """
         Prints the following scores:
@@ -298,22 +318,23 @@ class SpacyModel:
         false_positive = cf["Is Negative"].iloc[0]
         false_negative = cf["Is Positive"].iloc[1]
         accuracy = (true_positive+true_negative)/(cf.values.sum() + 1e-100)
-        precision = true_positive/(true_positive+false_positive+ 1e-100)
-        specificity = true_negative/(true_negative+false_positive+ 1e-100)
-        recall = true_positive/(true_positive+false_negative+ 1e-100)
+        precision = true_positive/(true_positive+false_positive + 1e-100)
+        specificity = true_negative/(true_negative+false_positive + 1e-100)
+        recall = true_positive/(true_positive+false_negative + 1e-100)
         balanced_accuracy = (recall+specificity)/2
-        f_1 = 2*true_positive/(2*true_positive+false_positive+false_negative + 1e-100)
+        f_1 = 2*true_positive / \
+            (2*true_positive+false_positive+false_negative + 1e-100)
 
         print("Accuracy is: ", accuracy)
         print("Balanced accuracy is: ", balanced_accuracy)
         print("Precision is: ", precision)
         print("Recall is: ", recall)
         print("F1 score is: ", f_1)
-    
-    def count(self, text:str):
+
+    def count(self, text: str):
         try:
             ents = [("PER", 0), ("ORG", 0), ("LOC", 0)]
-            ents += [(x.label,0) for x in self.regex_matcher.regexes]
+            ents += [(x.label, 0) for x in self.regex_matcher.regexes]
             ents = list(set(ents))
         except AttributeError:
             ents = [("PER", 0), ("ORG", 0), ("LOC", 0)]
@@ -340,22 +361,23 @@ class SpacyModel:
         for token in doc:
             for child in token.children:
                 edges.append(('{0}'.format(token.lower_),
-                            '{0}'.format(child.lower_)))
+                              '{0}'.format(child.lower_)))
         return nx.DiGraph(edges)
 
-    def top_n_nodes(self, text:str, n=10):
+    def top_n_nodes(self, text: str, n=10):
         """
         :param text: The text in question as a string.
         :param n: Number of nodes desired. Default is 10.
         :return: The top n nodes with highest degree in the dependency graph.
         """
         graph = self.dependency_graph(text)
-        sorted_node_degrees = sorted(list(graph.degree), key= lambda x: x[1], reverse=True)
-        if(n>len(sorted_node_degrees)):
+        sorted_node_degrees = sorted(
+            list(graph.degree), key=lambda x: x[1], reverse=True)
+        if(n > len(sorted_node_degrees)):
             n = len(sorted_node_degrees)
         return sorted_node_degrees[:n]
 
-    def similarity(self, text:str, replacement = "entity", replacement_char = "~"):
+    def similarity(self, text: str, replacement="entity", replacement_char="~"):
         """
         :param text: The text in question as a string.
         :param replacement: The kind of replacement desired. Default is entity.
@@ -363,5 +385,6 @@ class SpacyModel:
         :return: The cosine similarity between the unaltered text and the altered text.
         """
         original = self.model(text)
-        censored = self.model(self.replace(text, replacement,replacement_char))
+        censored = self.model(self.replace(
+            text, replacement, replacement_char))
         return original.similarity(censored)

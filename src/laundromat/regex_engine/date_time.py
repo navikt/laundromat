@@ -2,7 +2,6 @@ from laundromat.regex_engine.regex_base import RegexBase
 import datetime
 
 
-
 class RegexDateTime(RegexBase):
 
     @property

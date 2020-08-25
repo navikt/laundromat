@@ -1,6 +1,7 @@
 from laundromat.regex_engine.regex_base import RegexBase
 import re
 
+
 class RegexTlfNr(RegexBase):
     @property
     def regex_pattern(self):

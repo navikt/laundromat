@@ -7,24 +7,22 @@ from laundromat.regex_engine.amount import RegexAmount
 from laundromat.regex_engine.date_time import RegexDateTime
 from laundromat.regex_engine.generic import RegexGeneric
 
+
 class RegexMatcher:
-    def __init__(self, regex_list = []):
+    def __init__(self, regex_list=[]):
         default_regexes = [RegexFnr(),
-                        RegexCreditCard(),
-                        RegexTlfNr(),
-                        RegexDateTime(),
-                        RegexAmount()
-                        ]
+                           RegexCreditCard(),
+                           RegexTlfNr(),
+                           RegexDateTime(),
+                           RegexAmount()
+                           ]
         self.regexes = []
         for re in default_regexes:
             if re.label in regex_list:
                 self.regexes.append(re)
-        
-    
 
     def append_regexes(self, regex):
         self.regexes.append(regex)
-
 
     def match_func(self, doc):
         """
@@ -42,7 +40,7 @@ class RegexMatcher:
                 if type(span) is not type(None):
                     if not self.overlap(span, doc):
                         spans.append(span)
-        
+
         doc._.ents_regex = spans
         return doc
 
@@ -53,9 +51,6 @@ class RegexMatcher:
         :return: True if overlap
         """
         for entity in doc.ents:
-            if (entity.start <= span.start <= entity.end) or (entity.start <=span.end <=entity.end):
+            if (entity.start <= span.start <= entity.end) or (entity.start <= span.end <= entity.end):
                 return True
         return False
-
-
-

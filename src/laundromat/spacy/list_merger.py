@@ -1,5 +1,6 @@
 from spacy.tokens import Doc
 
+
 def merger(doc):
     """
     Merges the RegEx entities and the NER entities. If conflicts arise the function will try to create the
@@ -37,14 +38,14 @@ def merger(doc):
     deletion_index = []
     if merged:
         for i in range(len(merged)):
-            if(i==len(merged)-1):
+            if(i == len(merged)-1):
                 continue
             start_a = merged[i].start_char
             start_b = merged[i+1].start_char
             end_a = merged[i].end_char
             end_b = merged[i+1].end_char
 
-            if start_a == start_b or end_a==end_b:
+            if start_a == start_b or end_a == end_b:
                 start = min(start_a, start_b)
                 end = max(end_a, end_b)
                 deletion_index += [i, i+1]
@@ -62,6 +63,6 @@ def merger(doc):
         del merged[index]
     #Adds new combined entities
     final += merged
-    
+
     doc.ents = final
     return doc
