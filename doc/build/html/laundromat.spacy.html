@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>laundromat.spacy &#8212; laundromat 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -30,7 +31,8 @@
         <li class="right" >
           <a href="laundromat.regex_engine.html" title="laundromat.regex_engine"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">laundromat 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">laundromat 0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">laundromat.spacy</a></li> 
       </ul>
     </div>  
 
@@ -41,49 +43,69 @@
             
   <div class="section" id="laundromat-spacy">
 <h1>laundromat.spacy<a class="headerlink" href="#laundromat-spacy" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-laundromat.spacy.data_handler">
-<span id="laundromat-spacy-data-handler"></span><h2>laundromat.spacy.data_handler<a class="headerlink" href="#module-laundromat.spacy.data_handler" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="laundromat.spacy.data_handler.get_data">
-<code class="sig-prename descclassname">laundromat.spacy.data_handler.</code><code class="sig-name descname">get_data</code><span class="sig-paren">(</span><em class="sig-param">file_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.data_handler.get_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes the file path of the integrated data and returns the csv-file as a dataframe
-:param file_name:
-:return dataframe:</p>
-</dd></dl>
-
-</div>
 <div class="section" id="module-laundromat.spacy.list_merger">
 <span id="laundromat-spacy-list-merger"></span><h2>laundromat.spacy.list_merger<a class="headerlink" href="#module-laundromat.spacy.list_merger" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="py function">
 <dt id="laundromat.spacy.list_merger.merger">
-<code class="sig-prename descclassname">laundromat.spacy.list_merger.</code><code class="sig-name descname">merger</code><span class="sig-paren">(</span><em class="sig-param">doc</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.list_merger.merger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Assumes that the lists can contain no more than one duplicate of each entity</p>
+<code class="sig-prename descclassname">laundromat.spacy.list_merger.</code><code class="sig-name descname">merger</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">doc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.list_merger.merger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges the RegEx entities and the NER entities. If conflicts arise the function will try to create the
+largest entity possible. Whether by merging the entities or choosing the larger of the two.</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-laundromat.spacy.matcher_list">
 <span id="laundromat-spacy-matcher-list"></span><h2>laundromat.spacy.matcher_list<a class="headerlink" href="#module-laundromat.spacy.matcher_list" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="laundromat.spacy.matcher_list.csv_list_matcher">
-<code class="sig-prename descclassname">laundromat.spacy.matcher_list.</code><code class="sig-name descname">csv_list_matcher</code><span class="sig-paren">(</span><em class="sig-param">nlp</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.matcher_list.csv_list_matcher" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt id="laundromat.spacy.matcher_list.ListMatcher">
+<em class="property">class </em><code class="sig-prename descclassname">laundromat.spacy.matcher_list.</code><code class="sig-name descname">ListMatcher</code><a class="headerlink" href="#laundromat.spacy.matcher_list.ListMatcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="laundromat.spacy.matcher_list.ListMatcher.csv_list_matcher">
+<code class="sig-name descname">csv_list_matcher</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nlp</span></em>, <em class="sig-param"><span class="n">path_list</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.matcher_list.ListMatcher.csv_list_matcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads csv-files for names and surnames and uses EntityRuler to match to a entity and return to be added to
 the model pipeline</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nlp</strong> – The Spacy model</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The ruler containing the new pattern rules to be included in the pipeline</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nlp</strong> – The Spacy model</p></li>
+<li><p><strong>path_list</strong> – a list of tuples with the path of the list and its attendant entity.</p></li>
+</ul>
 </dd>
 </dl>
+<p>Accepts only single entity type lists. Lists must be a single column with the string “text” in the first cell.
+:return: The ruler containing the new pattern rules to be included in the pipeline</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.matcher_list.ListMatcher.default_list_append">
+<code class="sig-name descname">default_list_append</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.matcher_list.ListMatcher.default_list_append" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.matcher_list.ListMatcher.get_data">
+<code class="sig-name descname">get_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.matcher_list.ListMatcher.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the file path of the integrated data and returns the csv-file as a dataframe
+:param file_name:
+:return dataframe:</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
 <div class="section" id="module-laundromat.spacy.matcher_regex">
 <span id="laundromat-spacy-matcher-regex"></span><h2>laundromat.spacy.matcher_regex<a class="headerlink" href="#module-laundromat.spacy.matcher_regex" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="laundromat.spacy.matcher_regex.match_func">
-<code class="sig-prename descclassname">laundromat.spacy.matcher_regex.</code><code class="sig-name descname">match_func</code><span class="sig-paren">(</span><em class="sig-param">doc</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.matcher_regex.match_func" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt id="laundromat.spacy.matcher_regex.RegexMatcher">
+<em class="property">class </em><code class="sig-prename descclassname">laundromat.spacy.matcher_regex.</code><code class="sig-name descname">RegexMatcher</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">regex_list</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.matcher_regex.RegexMatcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="laundromat.spacy.matcher_regex.RegexMatcher.append_regexes">
+<code class="sig-name descname">append_regexes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">regex</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.matcher_regex.RegexMatcher.append_regexes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.matcher_regex.RegexMatcher.match_func">
+<code class="sig-name descname">match_func</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">doc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.matcher_regex.RegexMatcher.match_func" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses regex to find patterns and label them with the given label.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -95,38 +117,34 @@ the model pipeline</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="laundromat.spacy.matcher_regex.overlap">
-<code class="sig-prename descclassname">laundromat.spacy.matcher_regex.</code><code class="sig-name descname">overlap</code><span class="sig-paren">(</span><em class="sig-param">span</em>, <em class="sig-param">doc</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.matcher_regex.overlap" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt id="laundromat.spacy.matcher_regex.RegexMatcher.overlap">
+<code class="sig-name descname">overlap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">span</span></em>, <em class="sig-param"><span class="n">doc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.matcher_regex.RegexMatcher.overlap" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>span</strong> – Span of words</p></li>
+<li><p><strong>doc</strong> – The text in doc-format</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if overlap</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
 
 </div>
 <div class="section" id="module-laundromat.spacy.regex_formatter">
 <span id="laundromat-spacy-regex-formatter"></span><h2>laundromat.spacy.regex_formatter<a class="headerlink" href="#module-laundromat.spacy.regex_formatter" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="laundromat.spacy.regex_formatter.all_possible_labels">
-<code class="sig-prename descclassname">laundromat.spacy.regex_formatter.</code><code class="sig-name descname">all_possible_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.regex_formatter.all_possible_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Prints all possible entities</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="laundromat.spacy.regex_formatter.new_entity">
-<code class="sig-prename descclassname">laundromat.spacy.regex_formatter.</code><code class="sig-name descname">new_entity</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">match: str</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.regex_formatter.new_entity" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="laundromat.spacy.regex_formatter.regex_engines">
-<code class="sig-prename descclassname">laundromat.spacy.regex_formatter.</code><code class="sig-name descname">regex_engines</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.regex_formatter.regex_engines" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class that calls the different regex classes, and what priority they have. Priority form top to bottom</p>
-</dd></dl>
-
-<dl class="function">
+<dl class="py function">
 <dt id="laundromat.spacy.regex_formatter.regex_formatter">
-<code class="sig-prename descclassname">laundromat.spacy.regex_formatter.</code><code class="sig-name descname">regex_formatter</code><span class="sig-paren">(</span><em class="sig-param">entities: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.regex_formatter.regex_formatter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Formats desired entities such that they can be fed to SpaCy’s entity ruler</p>
+<code class="sig-prename descclassname">laundromat.spacy.regex_formatter.</code><code class="sig-name descname">regex_formatter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entities</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.regex_formatter.regex_formatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats desired entities such that they can be fed to SpaCy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>entities</strong> – a list of strings denoting which entities one wishes to include in the model</p>
+<dd class="field-odd"><p><strong>entities</strong> – A list of strings denoting which entities one wishes to include in the model.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -134,14 +152,34 @@ the model pipeline</p>
 </div>
 <div class="section" id="module-laundromat.spacy.spacy_model">
 <span id="laundromat-spacy-spacy-model"></span><h2>laundromat.spacy.spacy_model<a class="headerlink" href="#module-laundromat.spacy.spacy_model" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="laundromat.spacy.spacy_model.SpacyModel">
-<em class="property">class </em><code class="sig-prename descclassname">laundromat.spacy.spacy_model.</code><code class="sig-name descname">SpacyModel</code><span class="sig-paren">(</span><em class="sig-param">model=None</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">laundromat.spacy.spacy_model.</code><code class="sig-name descname">SpacyModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="method">
+<dl class="field-list simple">
+<dt class="field-odd">SpacyModel class</dt>
+<dd class="field-odd"><p>A class for managing a SpaCy nlp model with methods for the following:</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>adding custom RegEx</p></li>
+<li><p>easy training and display of results</p></li>
+<li><p>various metrics</p></li>
+</ul>
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.add_list">
+<code class="sig-name descname">add_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.add_list" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_list</strong> – new lists must be a tuple of a path and a tag.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="laundromat.spacy.spacy_model.SpacyModel.add_patterns">
-<code class="sig-name descname">add_patterns</code><span class="sig-paren">(</span><em class="sig-param">entities: list = None</em>, <em class="sig-param">before_ner=True</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.add_patterns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds desired patterns to the entity ruler of the SpaCy model</p>
+<code class="sig-name descname">add_patterns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entities</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">['FNR', 'DTM', 'TLF', 'AMOUNT', 'CREDIT_CARD']</span></em>, <em class="sig-param"><span class="n">before_ner</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">lookup</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.add_patterns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds desired patterns to the entity ruler of the SpaCy model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>entities</strong> – a list of strings denoting which entities the nlp model should detect.</p>
@@ -149,32 +187,51 @@ the model pipeline</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="laundromat.spacy.spacy_model.SpacyModel.confusion_matrix">
-<code class="sig-name descname">confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">TEST_DATA</em>, <em class="sig-param">strict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.confusion_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates confusion matrix for given data. Only considers whether a token has been labeled and not if it has been labeled correctly.</p>
+<code class="sig-name descname">confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">TEST_DATA</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates confusion matrix for given data. 
+Only considers whether a token has been labeled and not if it has been labeled correctly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Confusion matrix as a dataframe.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.dependency_graph">
-<code class="sig-name descname">dependency_graph</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.dependency_graph" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.count">
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.count" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.dependency_graph">
+<code class="sig-name descname">dependency_graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.dependency_graph" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> – The text in question as a string.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A digraph of the linguistic dependencies in the text.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="laundromat.spacy.spacy_model.SpacyModel.disable_ner">
 <code class="sig-name descname">disable_ner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.disable_ner" title="Permalink to this definition">¶</a></dt>
-<dd><p>Disables the NER-model in the pipeline</p>
+<dd><p>Disables the NER-model in the pipeline.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.display_predictions">
-<code class="sig-name descname">display_predictions</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.display_predictions" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.display">
+<code class="sig-name descname">display</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.display" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="laundromat.spacy.spacy_model.SpacyModel.doc">
-<code class="sig-name descname">doc</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.doc" title="Permalink to this definition">¶</a></dt>
-<dd><p>A method to return the doc, thus all its meta info.</p>
+<code class="sig-name descname">doc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the doc, a SpaCy object containing metadata about the text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>text</strong> – A text string to be ran through the model</p>
@@ -185,79 +242,132 @@ the model pipeline</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.enable_ner">
-<code class="sig-name descname">enable_ner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.enable_ner" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enables the NER-model in the pipeline</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.f1_scorer">
-<code class="sig-name descname">f1_scorer</code><span class="sig-paren">(</span><em class="sig-param">TEST_DATA</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.f1_scorer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ignores data of the wrong format. If this is a problem, use print_scores instead.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.pipeline">
-<code class="sig-name descname">pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.pipeline" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.doc_list">
+<code class="sig-name descname">doc_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.doc_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.enable_ner">
+<code class="sig-name descname">enable_ner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.enable_ner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables the NER-model in the pipeline.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.f1_scorer">
+<code class="sig-name descname">f1_scorer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">TEST_DATA</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.f1_scorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ignores data of the wrong format. If this is a problem, use print_scores instead.
+:return: Scores as a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.new_regex">
+<code class="sig-name descname">new_regex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pattern</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">context</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.new_regex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.pipeline">
+<code class="sig-name descname">pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints current NLP pipeline.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="laundromat.spacy.spacy_model.SpacyModel.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Prints the found entities, their labels, start, and end index.</p>
-<dl class="field-list simple">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.predict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>text</strong> – a string of text which is to be analysed.</p>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.print_scores">
-<code class="sig-name descname">print_scores</code><span class="sig-paren">(</span><em class="sig-param">TEST_DATA</em>, <em class="sig-param">strict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.print_scores" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.replace">
-<code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">replacement='entity'</em>, <em class="sig-param">replacement_char='~'</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.replace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replaces found entities in the given text with the attendant entity labels,
-e.g. a name is replaced with &lt;PER&gt;.</p>
-<p>returns: the modified text as a string</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.similarity">
-<code class="sig-name descname">similarity</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">replacement='entity'</em>, <em class="sig-param">replacement_char='~'</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.similarity" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.test">
-<code class="sig-name descname">test</code><span class="sig-paren">(</span><em class="sig-param">TEST_DATA</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tests the model on the given test data. Since identifying sensitive information is more important
-than identifying it correctly, we utilise both our own custom score and a much
-stricter F1 score. For our custom score metric, each correct entity represents 1 point.
-Each token correctly labeled represents 1/n points where n is the number of tokens
-in the entity.</p>
-<p>TODO Case in which one is contained in the other has been simplified</p>
-<p>TODO No functionality for which entity label has been applied</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a custom score, and the F_1 score</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>found entities, their labels, start, and end index.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.top_n_nodes">
-<code class="sig-name descname">top_n_nodes</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">n=10</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.top_n_nodes" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.predict_list">
+<code class="sig-name descname">predict_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.predict_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="laundromat.spacy.spacy_model.SpacyModel.train">
-<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">TRAIN_DATA</em>, <em class="sig-param">labels: list</em>, <em class="sig-param">n_iter: int = 30</em>, <em class="sig-param">output_dir=None</em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.train" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes the training data and trains the wanted entities. Also saves the model if a output path is given</p>
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.print_matcher_lists">
+<code class="sig-name descname">print_matcher_lists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.print_matcher_lists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.print_regex_labels">
+<code class="sig-name descname">print_regex_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.print_regex_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints regex labels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.print_scores">
+<code class="sig-name descname">print_scores</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">TEST_DATA</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.print_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the following scores:
+- Accuracy
+- Balanced accuracy
+- Precision
+- Recall
+- F1 score</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.replace">
+<code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">replacement</span><span class="o">=</span><span class="default_value">'entity'</span></em>, <em class="sig-param"><span class="n">replacement_char</span><span class="o">=</span><span class="default_value">'~'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces found entities in the given text with the attendant entity labels,
+e.g. a name is replaced with &lt;PER&gt;. Shuffle replacement is hard coded to use a list
+of girl, boy, county, country, and town names.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – The text in question as a string.</p></li>
+<li><p><strong>replacement</strong> – The kind of replacement desired. Default is entity.</p></li>
+<li><p><strong>replacement_char</strong> – The character used for character and padding replacement. Default is ~.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the modified text as a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.similarity">
+<code class="sig-name descname">similarity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">replacement</span><span class="o">=</span><span class="default_value">'entity'</span></em>, <em class="sig-param"><span class="n">replacement_char</span><span class="o">=</span><span class="default_value">'~'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.similarity" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – The text in question as a string.</p></li>
+<li><p><strong>replacement</strong> – The kind of replacement desired. Default is entity.</p></li>
+<li><p><strong>replacement_char</strong> – The character used for character and padding replacement. Default is ~.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The cosine similarity between the unaltered text and the altered text.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.top_n_nodes">
+<code class="sig-name descname">top_n_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.top_n_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – The text in question as a string.</p></li>
+<li><p><strong>n</strong> – Number of nodes desired. Default is 10.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The top n nodes with highest degree in the dependency graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="laundromat.spacy.spacy_model.SpacyModel.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">TRAIN_DATA</span></em>, <em class="sig-param"><span class="n">labels</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">n_iter</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">30</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#laundromat.spacy.spacy_model.SpacyModel.train" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>TRAIN_DATA</strong> – training data</p></li>
@@ -275,6 +385,7 @@ in the entity.</p>
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -283,7 +394,6 @@ in the entity.</p>
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">laundromat.spacy</a><ul>
-<li><a class="reference internal" href="#module-laundromat.spacy.data_handler">laundromat.spacy.data_handler</a></li>
 <li><a class="reference internal" href="#module-laundromat.spacy.list_merger">laundromat.spacy.list_merger</a></li>
 <li><a class="reference internal" href="#module-laundromat.spacy.matcher_list">laundromat.spacy.matcher_list</a></li>
 <li><a class="reference internal" href="#module-laundromat.spacy.matcher_regex">laundromat.spacy.matcher_regex</a></li>
@@ -329,12 +439,13 @@ in the entity.</p>
         <li class="right" >
           <a href="laundromat.regex_engine.html" title="laundromat.regex_engine"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">laundromat 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">laundromat 0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">laundromat.spacy</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Petter Nymark, Marius Dioli.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to laundromat’s documentation! &#8212; laundromat 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -30,7 +31,8 @@
         <li class="right" >
           <a href="laundromat.regex_engine.html" title="laundromat.regex_engine"
              accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">laundromat 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">laundromat 0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to laundromat’s documentation!</a></li> 
       </ul>
     </div>  
 
@@ -50,13 +52,13 @@
 <li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.credit_card">laundromat.regex_engine.credit_card</a></li>
 <li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.date_time">laundromat.regex_engine.date_time</a></li>
 <li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.fnr">laundromat.regex_engine.fnr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.generic">laundromat.regex_engine.generic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.kontonummer">laundromat.regex_engine.kontonummer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.regex_base">laundromat.regex_engine.regex_base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.tlfnr">laundromat.regex_engine.tlfnr</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="laundromat.spacy.html">laundromat.spacy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="laundromat.spacy.html#module-laundromat.spacy.data_handler">laundromat.spacy.data_handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="laundromat.spacy.html#module-laundromat.spacy.list_merger">laundromat.spacy.list_merger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="laundromat.spacy.html#module-laundromat.spacy.matcher_list">laundromat.spacy.matcher_list</a></li>
 <li class="toctree-l2"><a class="reference internal" href="laundromat.spacy.html#module-laundromat.spacy.matcher_regex">laundromat.spacy.matcher_regex</a></li>
@@ -68,61 +70,94 @@
 </div>
 <div class="section" id="what-is-laundromat">
 <h2>What Is Laundromat?<a class="headerlink" href="#what-is-laundromat" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="protect-your-personal-data-in-text">
-<h3>Protect your personal data in text<a class="headerlink" href="#protect-your-personal-data-in-text" title="Permalink to this headline">¶</a></h3>
-<p>This is a package for anonamyzing norwegian text.</p>
-<p>Laundromat uses a mix of matching techniques like Regular expression
-and a statistical model to recognize and remove personal information in norwegian text. The package is
-built around SpaCy NLP. Current functionality of
-the package:</p>
+<p>Laundromat is a python package for scrubbing personal information from text.
+The current Laundromat is adapted to the Norwegian context, but can easily be modified to fit any language.</p>
+<p>Laundromat uses regular expressions coupled with a machine learning model to
+recognize and remove personal information in norwegian text. The package is
+built around SpaCy. Current functionality of the package includes:</p>
 <ul class="simple">
 <li><p>Detecting named entities related to personal and sensitive information.</p></li>
 <li><p>Censoring texts containing said information.</p></li>
 <li><p>Improving the NER model from new data.</p></li>
 <li><p>Scoring the model with various metrics.</p></li>
-<li><p>Metrics on how “anonymous” a text is.</p></li>
 </ul>
 <p>Supported entities:</p>
 <ul class="simple">
 <li><p>&lt;PER&gt; - Person</p></li>
-<li><p>&lt;DTM&gt; - Date time</p></li>
+<li><p>&lt;DTM&gt; - Date-time</p></li>
 <li><p>&lt;TLF&gt; - Telephone number</p></li>
-<li><p>&lt;FNR&gt; - Birth number</p></li>
-<li><p>&lt;AMOUNT&gt; - Social security number</p></li>
-<li><p>&lt;LOC&gt;  - Location</p></li>
+<li><p>&lt;FNR&gt; - Norwegian Personal Number</p></li>
+<li><p>&lt;AMOUNT&gt; - Amounts like percentages</p></li>
+<li><p>&lt;LOC&gt;  - Location, i.e. countries, cities, and addresses.</p></li>
 <li><p>&lt;CREDIT_CARD&gt; - Credit card number</p></li>
 </ul>
-</div>
-<div class="section" id="current-performance">
-<h3>Current Performance<a class="headerlink" href="#current-performance" title="Permalink to this headline">¶</a></h3>
-<p>The following table shows the best current performance ran on 500 norwegian training/test data texts.</p>
+<div class="section" id="current-f1-scores-with-a-model-tuned-on-500-hand-labled-texts">
+<h3>Current F1 scores with a model tuned on 500 hand labled texts:<a class="headerlink" href="#current-f1-scores-with-a-model-tuned-on-500-hand-labled-texts" title="Permalink to this headline">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 29%" />
-<col style="width: 42%" />
+<col style="width: 33%" />
+<col style="width: 38%" />
 <col style="width: 29%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td colspan="2"><p>Enteties</p></td>
+<tr class="row-odd"><td colspan="2"><p>Entities</p></td>
 <td><p>Score</p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>PER</p></td>
-<td><p>0</p></td>
+<tr class="row-even"><td colspan="2"><p>Overall</p></td>
+<td><p>87</p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>TLF</p></td>
-<td><p>0</p></td>
+<tr class="row-odd"><td colspan="2"><p>PER</p></td>
+<td><p>92</p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>DTM</p></td>
-<td><p>0</p></td>
+<tr class="row-even"><td colspan="2"><p>TLF</p></td>
+<td><p>71</p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>AMOUNT</p></td>
-<td><p>0</p></td>
+<tr class="row-odd"><td colspan="2"><p>DTM</p></td>
+<td><p>86</p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>LOC</p></td>
-<td><p>0</p></td>
+<tr class="row-even"><td colspan="2"><p>AMOUNT</p></td>
+<td><p>83</p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>CREDIT_CARD</p></td>
-<td><p>0</p></td>
+<tr class="row-odd"><td colspan="2"><p>LOC</p></td>
+<td><p>89</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>ORG</p></td>
+<td><p>67</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="current-f1-scores-using-an-untrained-spacy-model">
+<h3>Current F1 scores using an untrained SpaCy model:<a class="headerlink" href="#current-f1-scores-using-an-untrained-spacy-model" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 72%" />
+<col style="width: 28%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Entities</p></td>
+<td><p>Score</p></td>
+</tr>
+<tr class="row-even"><td><p>Overall</p></td>
+<td><p>40</p></td>
+</tr>
+<tr class="row-odd"><td><p>PER</p></td>
+<td><p>63</p></td>
+</tr>
+<tr class="row-even"><td><p>TLF</p></td>
+<td><p>51</p></td>
+</tr>
+<tr class="row-odd"><td><p>DTM</p></td>
+<td><p>38</p></td>
+</tr>
+<tr class="row-even"><td><p>AMOUNT</p></td>
+<td><p>06</p></td>
+</tr>
+<tr class="row-odd"><td><p>LOC</p></td>
+<td><p>58</p></td>
+</tr>
+<tr class="row-even"><td><p>ORG</p></td>
+<td><p>09</p></td>
 </tr>
 </tbody>
 </table>
@@ -130,8 +165,6 @@ the package:</p>
 <div class="section" id="requirements">
 <h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
 <p>spacy &gt;= 2.3.0</p>
-<p>numpy</p>
-<p>pandas</p>
 </div>
 </div>
 </div>
@@ -145,6 +178,7 @@ the package:</p>
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -154,8 +188,8 @@ the package:</p>
   <ul>
 <li><a class="reference internal" href="#">Welcome to laundromat’s documentation!</a><ul>
 <li><a class="reference internal" href="#what-is-laundromat">What Is Laundromat?</a><ul>
-<li><a class="reference internal" href="#protect-your-personal-data-in-text">Protect your personal data in text</a></li>
-<li><a class="reference internal" href="#current-performance">Current Performance</a></li>
+<li><a class="reference internal" href="#current-f1-scores-with-a-model-tuned-on-500-hand-labled-texts">Current F1 scores with a model tuned on 500 hand labled texts:</a></li>
+<li><a class="reference internal" href="#current-f1-scores-using-an-untrained-spacy-model">Current F1 scores using an untrained SpaCy model:</a></li>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
 </ul>
 </li>
@@ -200,12 +234,13 @@ the package:</p>
         <li class="right" >
           <a href="laundromat.regex_engine.html" title="laundromat.regex_engine"
              >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">laundromat 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">laundromat 0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to laundromat’s documentation!</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Petter Nymark, Marius Dioli.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

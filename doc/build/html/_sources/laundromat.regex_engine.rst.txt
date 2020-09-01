@@ -42,6 +42,14 @@ laundromat.regex\_engine.fnr
    :undoc-members:
    :show-inheritance:
 
+laundromat.regex\_engine.generic
+--------------------------------
+
+.. automodule:: laundromat.regex_engine.generic
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 laundromat.regex\_engine.kontonummer
 ------------------------------------
 

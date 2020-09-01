@@ -25,7 +25,7 @@ Supported entities:
 
 
 Current F1 scores with a model tuned on 500 hand labled texts:
--------------------
+--------------------------------------------------------------
 
 
 +--------+---------+-------+
@@ -48,7 +48,7 @@ Current F1 scores with a model tuned on 500 hand labled texts:
 
 
 Current F1 scores using an untrained SpaCy model:
--------------------
+-------------------------------------------------
 
 
 +------------------+-------+

@@ -1,15 +1,6 @@
 laundromat.spacy
 ================
 
-
-laundromat.spacy.data\_handler
-------------------------------
-
-.. automodule:: laundromat.spacy.data_handler
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 laundromat.spacy.list\_merger
 -----------------------------
 

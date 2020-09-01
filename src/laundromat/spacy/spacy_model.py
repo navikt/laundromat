@@ -21,7 +21,7 @@ from spacy.util import compounding, minibatch
 
 class SpacyModel:
     """
-    :SpacyModel class: A class for managing a SpaCy nlp model with methods for the following:
+    :SpacyModel class: Contains the following functionality:
     - adding custom RegEx 
     - easy training and display of results
     - various metrics
