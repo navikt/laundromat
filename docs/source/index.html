@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to laundromat’s documentation! &#8212; laundromat 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="laundromat.regex_engine" href="laundromat.regex_engine.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="laundromat.regex_engine.html" title="laundromat.regex_engine"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">laundromat 0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to laundromat’s documentation!</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-laundromat-s-documentation">
+<h1>Welcome to laundromat’s documentation!<a class="headerlink" href="#welcome-to-laundromat-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="laundromat.regex_engine.html">laundromat.regex_engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.alder">laundromat.regex_engine.alder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.amount">laundromat.regex_engine.amount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.credit_card">laundromat.regex_engine.credit_card</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.date_time">laundromat.regex_engine.date_time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.fnr">laundromat.regex_engine.fnr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.generic">laundromat.regex_engine.generic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.kontonummer">laundromat.regex_engine.kontonummer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.regex_base">laundromat.regex_engine.regex_base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.regex_engine.html#module-laundromat.regex_engine.tlfnr">laundromat.regex_engine.tlfnr</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="laundromat.spacy.html">laundromat.spacy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.spacy.html#module-laundromat.spacy.list_merger">laundromat.spacy.list_merger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.spacy.html#module-laundromat.spacy.matcher_list">laundromat.spacy.matcher_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.spacy.html#module-laundromat.spacy.matcher_regex">laundromat.spacy.matcher_regex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.spacy.html#module-laundromat.spacy.regex_formatter">laundromat.spacy.regex_formatter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laundromat.spacy.html#module-laundromat.spacy.spacy_model">laundromat.spacy.spacy_model</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="what-is-laundromat">
+<h2>What Is Laundromat?<a class="headerlink" href="#what-is-laundromat" title="Permalink to this headline">¶</a></h2>
+<p>Laundromat is a python package for scrubbing personal information from text.
+The current Laundromat is adapted to the Norwegian context, but can easily be modified to fit any language.</p>
+<p>Laundromat uses regular expressions coupled with a machine learning model to
+recognize and remove personal information in norwegian text. The package is
+built around SpaCy. Current functionality of the package includes:</p>
+<ul class="simple">
+<li><p>Detecting named entities related to personal and sensitive information.</p></li>
+<li><p>Censoring texts containing said information.</p></li>
+<li><p>Improving the NER model from new data.</p></li>
+<li><p>Scoring the model with various metrics.</p></li>
+</ul>
+<p>Supported entities:</p>
+<ul class="simple">
+<li><p>&lt;PER&gt; - Person</p></li>
+<li><p>&lt;DTM&gt; - Date-time</p></li>
+<li><p>&lt;TLF&gt; - Telephone number</p></li>
+<li><p>&lt;FNR&gt; - Norwegian Personal Number</p></li>
+<li><p>&lt;AMOUNT&gt; - Amounts like percentages</p></li>
+<li><p>&lt;LOC&gt;  - Location, i.e. countries, cities, and addresses.</p></li>
+<li><p>&lt;CREDIT_CARD&gt; - Credit card number</p></li>
+</ul>
+<div class="section" id="current-f1-scores-with-a-model-tuned-on-500-hand-labled-texts">
+<h3>Current F1 scores with a model tuned on 500 hand labled texts:<a class="headerlink" href="#current-f1-scores-with-a-model-tuned-on-500-hand-labled-texts" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 38%" />
+<col style="width: 29%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td colspan="2"><p>Entities</p></td>
+<td><p>Score</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>Overall</p></td>
+<td><p>87</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>PER</p></td>
+<td><p>92</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>TLF</p></td>
+<td><p>71</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>DTM</p></td>
+<td><p>86</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>AMOUNT</p></td>
+<td><p>83</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>LOC</p></td>
+<td><p>89</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>ORG</p></td>
+<td><p>67</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="current-f1-scores-using-an-untrained-spacy-model">
+<h3>Current F1 scores using an untrained SpaCy model:<a class="headerlink" href="#current-f1-scores-using-an-untrained-spacy-model" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 72%" />
+<col style="width: 28%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Entities</p></td>
+<td><p>Score</p></td>
+</tr>
+<tr class="row-even"><td><p>Overall</p></td>
+<td><p>40</p></td>
+</tr>
+<tr class="row-odd"><td><p>PER</p></td>
+<td><p>63</p></td>
+</tr>
+<tr class="row-even"><td><p>TLF</p></td>
+<td><p>51</p></td>
+</tr>
+<tr class="row-odd"><td><p>DTM</p></td>
+<td><p>38</p></td>
+</tr>
+<tr class="row-even"><td><p>AMOUNT</p></td>
+<td><p>06</p></td>
+</tr>
+<tr class="row-odd"><td><p>LOC</p></td>
+<td><p>58</p></td>
+</tr>
+<tr class="row-even"><td><p>ORG</p></td>
+<td><p>09</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<p>spacy &gt;= 2.3.0</p>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to laundromat’s documentation!</a><ul>
+<li><a class="reference internal" href="#what-is-laundromat">What Is Laundromat?</a><ul>
+<li><a class="reference internal" href="#current-f1-scores-with-a-model-tuned-on-500-hand-labled-texts">Current F1 scores with a model tuned on 500 hand labled texts:</a></li>
+<li><a class="reference internal" href="#current-f1-scores-using-an-untrained-spacy-model">Current F1 scores using an untrained SpaCy model:</a></li>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="laundromat.regex_engine.html"
+                        title="next chapter">laundromat.regex_engine</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="laundromat.regex_engine.html" title="laundromat.regex_engine"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">laundromat 0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to laundromat’s documentation!</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Petter Nymark, Marius Dioli.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

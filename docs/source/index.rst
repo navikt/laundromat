@@ -1,7 +1,7 @@
 
 Welcome to laundromat's documentation!
 ======================================
-.. toctree::
+.. doctree::
    :maxdepth: 2
    :caption: Contents:
 
