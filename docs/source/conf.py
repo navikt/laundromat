@@ -18,11 +18,10 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'laundromat'
-copyright = '2020, Petter Nymark, Marius Dioli'
-author = 'Petter Nymark, Marius Dioli'
+author = 'Marius Dioli, Petter Nymark'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '1.1.5'
 
 
 # -- General configuration ---------------------------------------------------
